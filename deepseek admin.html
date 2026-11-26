@@ -1,0 +1,1788 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101c35">
+  <title>Smart Xerox · Admin</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       Smart Xerox · Admin console
+       ============================================================ */
+    :root {
+      --ink: #15213a;
+      --muted: #78849a;
+      --blue: #325cf4;
+      --blue-dark: #244be1;
+      --line: #e8edf5;
+      --bg: #f6f8fc;
+      --green: #16945b;
+      --green-soft: #e8f8ef;
+      --amber: #b47700;
+      --amber-soft: #fff4df;
+      --red: #d14848;
+      --red-soft: #fdeeee;
+      --card-shadow: 0 5px 22px #192c5308;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    h1, h2, h3, h4, p { margin: 0; }
+    button { font-family: inherit; cursor: pointer; }
+    button:active { transform: scale(.975); }
+    button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid #94b4ff;
+      outline-offset: 2px;
+    }
+    button:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    svg { display: block; flex: none; }
+
+    /* ---------- shell ---------- */
+    .app { display: flex; min-height: 100vh; }
+    .side { display: none; }
+    .main-area { flex: 1; min-width: 0; }
+    .content { max-width: 1080px; margin: 0 auto; padding: 18px 16px 120px; }
+
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; letter-spacing: -.6px; }
+    .brand .mark {
+      width: 38px; height: 38px; border-radius: 12px; flex: none;
+      background: linear-gradient(135deg, #325cf4, #5379ff);
+      color: #fff; display: grid; place-items: center;
+      box-shadow: 0 6px 16px #325cf433;
+    }
+    .brand .mark svg { width: 20px; height: 20px; }
+    .brand small { display: block; font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: .4px; text-transform: uppercase; margin-top: 1px; }
+
+    /* ---------- topbar (mobile) ---------- */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; background: #fff; border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 15;
+    }
+
+    /* ---------- sync pill ---------- */
+    .sync-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #fff; border: 1px solid var(--line); border-radius: 100px;
+      padding: 6px 12px; font-size: 10.5px; font-weight: 800; color: var(--muted);
+      white-space: nowrap;
+    }
+    .sync-pill .dot { width: 7px; height: 7px; border-radius: 50%; background: #c3ccdb; flex: none; }
+    .sync-pill.ok .dot { background: #10b981; box-shadow: 0 0 0 3px #10b98120; }
+    .sync-pill.ok { color: var(--green); }
+    .sync-pill.err .dot { background: var(--red); box-shadow: 0 0 0 3px #d1484820; }
+    .sync-pill.err { color: var(--red); }
+
+    /* ---------- page head ---------- */
+    .page-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap; margin: 6px 0 20px;
+    }
+    .eyebrow { font-size: 10.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); font-weight: 800; }
+    .page-head h1 { font-size: 26px; letter-spacing: -1px; font-weight: 800; margin-top: 6px; }
+    .page-head p { color: var(--muted); font-size: 12.5px; line-height: 1.55; margin-top: 5px; max-width: 520px; }
+    .page-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* ---------- buttons ---------- */
+    .btn {
+      border: 0; background: var(--blue); color: #fff;
+      padding: 11px 17px; border-radius: 11px; font-size: 12.5px; font-weight: 800;
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      transition: background .18s, box-shadow .18s, border-color .18s, color .18s, transform .18s;
+      box-shadow: 0 5px 13px #325cf42b;
+    }
+    .btn:hover { background: var(--blue-dark); }
+    .btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: none; }
+    .btn.ghost:hover { border-color: #b3c5f5; color: var(--blue); }
+    .btn.danger { background: var(--red); box-shadow: 0 5px 13px #d1484830; }
+    .btn.danger:hover { background: #c93b3b; }
+    .btn.full { width: 100%; }
+    .btn svg { width: 15px; height: 15px; }
+
+    .mini {
+      border: 0; background: #f3f6fb; border-radius: 8px; padding: 7px 10px;
+      color: #53637d; font-size: 11px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 5px; transition: .18s;
+      white-space: nowrap;
+    }
+    .mini:hover { color: var(--blue); background: #eaf0ff; }
+    .mini.solid { background: var(--blue); color: #fff; box-shadow: 0 4px 10px #325cf42e; }
+    .mini.solid:hover { background: var(--blue-dark); color: #fff; }
+    .mini.danger { background: #fdeeee; color: var(--red); }
+    .mini.danger:hover { background: #f9dcdc; color: #b83a3a; }
+    .mini svg { width: 13px; height: 13px; }
+
+    /* ---------- alert ---------- */
+    .alert {
+      display: flex; gap: 11px; align-items: flex-start;
+      padding: 14px 16px; border-radius: 14px; margin-bottom: 16px;
+      background: var(--amber-soft); border: 1px solid #f1dcb0;
+      font-size: 12px; line-height: 1.55; color: #7a5a12; font-weight: 600;
+    }
+    .alert svg { width: 17px; height: 17px; color: var(--amber); margin-top: 1px; }
+    .alert strong { display: block; color: #5d4409; font-weight: 800; margin-bottom: 2px; }
+
+    /* ---------- stats ---------- */
+    .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 22px; }
+    .stat {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px;
+      padding: 14px 15px; box-shadow: var(--card-shadow); min-width: 0;
+    }
+    .stat-top { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+    .stat-ic {
+      width: 30px; height: 30px; border-radius: 9px; flex: none;
+      background: #eef2ff; color: var(--blue); display: grid; place-items: center;
+    }
+    .stat-ic svg { width: 15px; height: 15px; }
+    .stat-ic.green { background: var(--green-soft); color: var(--green); }
+    .stat-ic.amber { background: var(--amber-soft); color: var(--amber); }
+    .stat-ic.red { background: var(--red-soft); color: var(--red); }
+    .stat-label {
+      font-size: 9.5px; font-weight: 800; letter-spacing: 1.1px;
+      text-transform: uppercase; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .stat-value {
+      font-size: 23px; font-weight: 800; letter-spacing: -1px;
+      font-variant-numeric: tabular-nums; line-height: 1.1;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .stat-sub { font-size: 10.5px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+
+    /* ---------- section ---------- */
+    .section { margin-bottom: 26px; }
+    .section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 12px; flex-wrap: wrap;
+    }
+    .section-head h2 { font-size: 15.5px; font-weight: 800; letter-spacing: -.3px; }
+    .section-head small { font-size: 11px; color: var(--muted); font-weight: 600; }
+
+    /* ---------- queue rows ---------- */
+    .queue-list { display: grid; gap: 9px; }
+    .q-row {
+      display: flex; align-items: center; gap: 13px;
+      background: #fff; border: 1px solid var(--line); border-radius: 15px;
+      padding: 13px 14px; box-shadow: var(--card-shadow);
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .q-row:hover { border-color: #cddbf7; box-shadow: 0 10px 26px #192c5314; }
+    .q-num {
+      flex: none; min-width: 54px; text-align: center;
+      font-size: 17px; font-weight: 800; letter-spacing: -.5px;
+      font-variant-numeric: tabular-nums; color: var(--ink);
+      background: #f5f8ff; border: 1px solid #e4ecf8; border-radius: 10px;
+      padding: 7px 9px;
+    }
+    .q-body { flex: 1; min-width: 0; }
+    .q-line1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .q-line1 strong { font-size: 12.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .q-line2 { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; display: flex; gap: 5px 10px; flex-wrap: wrap; }
+    .q-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+
+    /* ---------- status badge ---------- */
+    .sbadge {
+      display: inline-flex; align-items: center; gap: 5px;
+      border-radius: 100px; padding: 4px 9px;
+      font-size: 10px; font-weight: 800; letter-spacing: .3px; white-space: nowrap;
+    }
+    .sbadge .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex: none; }
+    .sbadge.pending   { background: var(--amber-soft); color: var(--amber); }
+    .sbadge.printing  { background: #eef2ff; color: var(--blue); }
+    .sbadge.ready     { background: var(--green-soft); color: var(--green); }
+    .sbadge.completed { background: #f0f2f6; color: #68758a; }
+    .sbadge.cancelled { background: var(--red-soft); color: var(--red); }
+
+    /* ---------- order card ---------- */
+    .order-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 17px;
+      padding: 14px 15px; box-shadow: var(--card-shadow);
+      transition: border-color .18s, box-shadow .18s;
+    }
+    .order-card:hover { border-color: #cddbf7; box-shadow: 0 10px 26px #192c5314; }
+    .oc-main { display: flex; align-items: center; gap: 13px; }
+    .oc-q { flex: none; min-width: 54px; text-align: center; }
+    .oc-q-label { display: block; font-size: 8.5px; font-weight: 800; letter-spacing: 1.3px; color: #94a0b2; }
+    .oc-q strong {
+      font-size: 18px; font-weight: 800; letter-spacing: -.6px;
+      font-variant-numeric: tabular-nums; line-height: 1.15;
+    }
+    .oc-info { flex: 1; min-width: 0; }
+    .oc-title { font-size: 12.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .oc-sub { font-size: 10.5px; color: var(--muted); font-weight: 600; margin-top: 3px; }
+    .oc-right { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; }
+    .oc-amt { font-size: 15px; font-weight: 800; letter-spacing: -.4px; font-variant-numeric: tabular-nums; }
+    .oc-actions {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      margin-top: 11px; padding-top: 11px; border-top: 1px dashed #eef2f9;
+    }
+
+    /* ---------- filters ---------- */
+    .toolbar { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+    .search-wrap { position: relative; flex: 1; min-width: 190px; }
+    .search-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 15px; height: 15px; color: #94a0b2; pointer-events: none;
+    }
+    .search-input {
+      width: 100%; border: 1px solid #dce4f0; border-radius: 11px;
+      padding: 11px 13px 11px 36px; font-size: 12.5px; background: #fff;
+      color: var(--ink); font-family: inherit; transition: border-color .15s, box-shadow .15s;
+    }
+    .search-input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px #325cf420; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .chip-btn {
+      border: 1.5px solid var(--line); background: #fff; border-radius: 100px;
+      padding: 7px 13px; font-size: 11px; font-weight: 800; color: #52617a; transition: .16s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .chip-btn:hover { border-color: #a9bdfc; }
+    .chip-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 5px 13px #325cf42e; }
+    .chip-btn .n {
+      font-size: 9.5px; font-weight: 800; padding: 1px 5px; border-radius: 100px;
+      background: #eef2f9; color: #68758a; font-variant-numeric: tabular-nums;
+    }
+    .chip-btn.active .n { background: #ffffff2e; color: #fff; }
+
+    /* ---------- empty ---------- */
+    .empty {
+      text-align: center; padding: 38px 20px; background: #fff;
+      border: 1px dashed #dbe4f2; border-radius: 17px; color: var(--muted);
+    }
+    .empty svg { width: 30px; height: 30px; color: #aebddd; margin: 0 auto 12px; }
+    .empty strong { display: block; color: var(--ink); font-size: 13.5px; font-weight: 800; }
+    .empty p { font-size: 11.5px; line-height: 1.6; margin-top: 5px; }
+
+    /* ---------- settings ---------- */
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: 17px;
+      padding: 17px; box-shadow: var(--card-shadow); margin-bottom: 14px;
+    }
+    .card h3 { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+    .card > p.hint { font-size: 11.5px; color: var(--muted); line-height: 1.6; margin-bottom: 13px; }
+    .kv { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; font-size: 12px; color: #758196; }
+    .kv + .kv { border-top: 1px solid #f4f7fc; }
+    .kv strong { color: var(--ink); font-weight: 800; text-align: right; font-variant-numeric: tabular-nums; }
+    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .price-table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+    .price-table th, .price-table td { text-align: left; padding: 8px 6px; border-bottom: 1px solid #f4f7fc; }
+    .price-table th { font-size: 9.5px; letter-spacing: 1px; text-transform: uppercase; color: #94a0b2; font-weight: 800; }
+    .price-table td { color: #53637d; font-weight: 600; }
+    .price-table td:last-child, .price-table th:last-child { text-align: right; font-weight: 800; color: var(--ink); }
+
+    /* ---------- bottom nav ---------- */
+    .bottom {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
+      height: 66px; background: #fff; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-around;
+      box-shadow: 0 -5px 25px #15213a0a;
+    }
+    .nav-btn {
+      border: 0; background: none; color: #94a0b2;
+      display: grid; justify-items: center; align-content: center; gap: 3px;
+      font-size: 9.5px; font-weight: 800; min-width: 74px; letter-spacing: .2px;
+    }
+    .nav-btn svg { width: 19px; height: 19px; }
+    .nav-btn.active { color: var(--blue); }
+
+    /* ---------- drawer ---------- */
+    .drawer-overlay {
+      position: fixed; inset: 0; z-index: 60; display: none;
+      background: #101b34a8; backdrop-filter: blur(4px);
+    }
+    .drawer-overlay.open { display: block; animation: fadeIn .18s ease-out; }
+    .drawer {
+      position: absolute; top: 0; right: 0; bottom: 0;
+      width: min(470px, 100%); background: #fff;
+      display: flex; flex-direction: column;
+      box-shadow: -24px 0 60px #101c3540;
+      animation: slideIn .26s cubic-bezier(.2, .8, .3, 1);
+    }
+    .drawer-body { flex: 1; overflow: auto; overscroll-behavior: contain; }
+    .dw-head {
+      position: sticky; top: 0; z-index: 2; background: #fff;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      padding: 16px 18px 13px; border-bottom: 1px solid var(--line);
+    }
+    .dw-head h2 { font-size: 22px; font-weight: 800; letter-spacing: -.8px; margin-top: 3px; font-variant-numeric: tabular-nums; }
+    .dw-close {
+      flex: none; border: 1px solid var(--line); background: #fff;
+      width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+      color: var(--ink); transition: .18s;
+    }
+    .dw-close:hover { color: var(--red); border-color: #f5c9c9; background: var(--red-soft); }
+    .dw-close svg { width: 16px; height: 16px; }
+    .dw-content { padding: 16px 18px 26px; }
+
+    .dw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 14px; }
+    .dw-cell {
+      background: #fafcff; border: 1px solid #eef2f9; border-radius: 12px;
+      padding: 10px 12px; min-width: 0;
+    }
+    .dw-cell small {
+      display: block; font-size: 9px; font-weight: 800; letter-spacing: 1.1px;
+      text-transform: uppercase; color: #94a0b2; margin-bottom: 3px;
+    }
+    .dw-cell strong {
+      display: block; font-size: 12px; font-weight: 800; color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .dw-amount {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 18px; border-radius: 16px; margin-bottom: 18px;
+      background: linear-gradient(135deg, #eef2ff, #e0e8ff); border: 1px solid #cfdaff;
+    }
+    .dw-amount small { font-size: 9.5px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: #5a6b86; }
+    .dw-amount strong { font-size: 24px; font-weight: 800; letter-spacing: -1px; color: var(--blue); font-variant-numeric: tabular-nums; }
+
+    .dw-section { margin-bottom: 20px; }
+    .dw-section > h3 {
+      font-size: 12px; font-weight: 800; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px; color: var(--ink);
+    }
+    .dw-section > h3 .count {
+      font-size: 9.5px; font-weight: 800; color: #68758a;
+      background: #f0f2f6; border-radius: 100px; padding: 2px 8px;
+    }
+
+    .dw-doc {
+      display: flex; gap: 11px; align-items: flex-start;
+      background: #fff; border: 1px solid var(--line); border-radius: 13px;
+      padding: 12px 13px; margin-bottom: 8px;
+    }
+    .dw-doc-ic {
+      flex: none; width: 34px; height: 38px; border-radius: 9px;
+      background: #eef2ff; color: var(--blue); display: grid; place-items: center;
+    }
+    .dw-doc-ic svg { width: 16px; height: 16px; }
+    .dw-doc-body { flex: 1; min-width: 0; }
+    .dw-doc-body strong { display: block; font-size: 12px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .dw-doc-body small { display: block; font-size: 10.5px; color: var(--muted); font-weight: 600; margin-top: 2px; }
+    .dw-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+    .dw-chips span {
+      font-size: 9.5px; font-weight: 700; color: #53637d;
+      background: #f7f9fd; border: 1px solid #eef2f9; border-radius: 100px; padding: 3px 8px;
+      white-space: nowrap;
+    }
+    .dw-muted { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+
+    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .status-opt {
+      border: 1.5px solid var(--line); background: #fff; border-radius: 11px;
+      padding: 10px 12px; font-size: 11.5px; font-weight: 800; color: #52617a;
+      transition: .16s; text-align: center;
+    }
+    .status-opt:hover { border-color: #a9bdfc; color: var(--blue); }
+    .status-opt.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 5px 13px #325cf42e; }
+    .status-opt.cancel { grid-column: 1 / -1; }
+    .status-opt.cancel:hover { border-color: #f5c9c9; color: var(--red); background: var(--red-soft); }
+    .status-opt.cancel.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: none; }
+
+    .dw-delete {
+      width: 100%; margin-top: 6px; padding: 11px;
+      background: transparent; border: 0; border-radius: 10px;
+      color: #94a0b2; font-size: 11.5px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: .18s;
+    }
+    .dw-delete:hover { color: var(--red); background: var(--red-soft); }
+    .dw-delete svg { width: 13px; height: 13px; }
+
+    /* ---------- confirm ---------- */
+    .confirm-overlay {
+      position: fixed; inset: 0; z-index: 70; display: none;
+      align-items: center; justify-content: center; padding: 20px;
+      background: #101b34a8; backdrop-filter: blur(5px);
+    }
+    .confirm-overlay.open { display: flex; animation: fadeIn .18s ease-out; }
+    .confirm-card {
+      background: #fff; border-radius: 22px; padding: 25px 22px 21px;
+      width: 100%; max-width: 380px; text-align: center;
+      box-shadow: 0 25px 60px #101c3550;
+      animation: pop .28s cubic-bezier(.2, .8, .3, 1.1);
+    }
+    .confirm-icon {
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #eef2ff; color: var(--blue);
+      display: grid; place-items: center; margin: 0 auto 15px;
+    }
+    .confirm-icon.danger { background: var(--red-soft); color: var(--red); }
+    .confirm-icon svg { width: 25px; height: 25px; }
+    .confirm-card h3 { font-size: 17px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 7px; }
+    .confirm-card p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+    .confirm-actions { display: flex; gap: 9px; }
+    .confirm-actions .btn { flex: 1; }
+
+    /* ---------- toast ---------- */
+    .toast {
+      position: fixed; z-index: 90; top: 16px; left: 50%;
+      transform: translateX(-50%) translateY(-90px);
+      background: #172440; color: #fff; border-radius: 11px;
+      padding: 11px 16px; font-size: 12px; font-weight: 700;
+      box-shadow: 0 10px 30px #101c3540;
+      transition: transform .28s cubic-bezier(.2, .8, .3, 1);
+      max-width: 90vw; text-align: center; pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideIn { from { transform: translateX(48px); opacity: .5; } to { transform: none; opacity: 1; } }
+    @keyframes pop { from { transform: scale(.93) translateY(10px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ---------- tablet / desktop ---------- */
+    @media (min-width: 560px) {
+      .stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 900px) {
+      .side {
+        display: flex; flex-direction: column; flex: none;
+        width: 244px; padding: 26px 16px; background: #fff;
+        border-right: 1px solid var(--line);
+        position: sticky; top: 0; height: 100vh;
+      }
+      .side .brand { margin: 2px 8px 34px; }
+      .side-nav { display: grid; gap: 5px; }
+      .side-nav button {
+        border: 0; background: transparent; color: #718097;
+        display: flex; align-items: center; gap: 12px;
+        padding: 11px 12px; border-radius: 11px;
+        font-size: 12.5px; font-weight: 800; text-align: left;
+        transition: background .16s, color .16s;
+      }
+      .side-nav button svg { width: 17px; height: 17px; }
+      .side-nav button:hover { background: #f5f8ff; color: var(--ink); }
+      .side-nav button.active { background: #edf2ff; color: var(--blue); }
+      .side-foot { margin-top: auto; padding: 0 6px; }
+      .side-foot .sync-pill { margin-bottom: 8px; }
+      .side-foot > small { display: block; font-size: 10.5px; line-height: 1.6; color: #94a0b2; font-weight: 600; }
+
+      .topbar { display: none; }
+      .bottom { display: none; }
+      .content { padding: 34px 38px 80px; }
+      .page-head h1 { font-size: 30px; }
+      .drawer { border-radius: 0; }
+    }
+
+    @media (min-width: 1180px) {
+      .content { padding: 38px 46px 90px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- ================= sidebar (desktop) ================= -->
+    <aside class="side">
+      <div class="brand">
+        <span class="mark" data-icon="printer"></span>
+        <div>
+          <strong>Smart Xerox</strong>
+          <small>Admin console</small>
+        </div>
+      </div>
+
+      <nav class="side-nav" aria-label="Admin navigation">
+        <button data-nav="dashboard" class="active" data-icon-label="grid">Dashboard</button>
+        <button data-nav="orders" data-icon-label="list">Orders</button>
+        <button data-nav="settings" data-icon-label="sliders">Settings</button>
+      </nav>
+
+      <div class="side-foot">
+        <div class="sync-pill"><span class="dot"></span><span class="txt">Connecting…</span></div>
+        <small>Status changes appear instantly in the customer app.</small>
+      </div>
+    </aside>
+
+    <!-- ================= main ================= -->
+    <div class="main-area">
+      <header class="topbar">
+        <div class="brand">
+          <span class="mark" data-icon="printer"></span>
+          <div>
+            <strong>Smart Xerox</strong>
+            <small>Admin</small>
+          </div>
+        </div>
+        <div class="sync-pill"><span class="dot"></span><span class="txt">Connecting…</span></div>
+      </header>
+
+      <main id="view" class="content" aria-live="polite"></main>
+    </div>
+  </div>
+
+  <!-- ================= bottom nav (mobile) ================= -->
+  <nav class="bottom" aria-label="Admin navigation">
+    <button class="nav-btn active" data-nav="dashboard" data-icon-label="grid">Dashboard</button>
+    <button class="nav-btn" data-nav="orders" data-icon-label="list">Orders</button>
+    <button class="nav-btn" data-nav="settings" data-icon-label="sliders">Settings</button>
+  </nav>
+
+  <!-- ================= order drawer ================= -->
+  <div id="drawer-overlay" class="drawer-overlay">
+    <aside class="drawer" role="dialog" aria-modal="true" aria-label="Order details">
+      <div id="drawer-body" class="drawer-body"></div>
+    </aside>
+  </div>
+
+  <!-- ================= confirm dialog ================= -->
+  <div id="confirm-overlay" class="confirm-overlay">
+    <div id="confirm-card" class="confirm-card" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <!-- ================= toast ================= -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ============================================================
+     *  Smart Xerox · Admin console
+     *  - reads / writes the same IndexedDB as the customer app
+     *  - pushes status changes over the "SmartXeroxOrders" channel
+     * ============================================================ */
+    'use strict';
+
+    /* ------------------------------------------------------------
+     * 0. Tiny helpers
+     * ---------------------------------------------------------- */
+    const $  = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    const money = (n) => '₹' + Number(n || 0).toFixed(2);
+
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    const toDate = (v) => {
+      const d = new Date(v);
+      return isNaN(d.getTime()) ? null : d;
+    };
+
+    const fmt = (v) => {
+      const d = toDate(v);
+      return d ? d.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '—';
+    };
+
+    const fmtTime = (v) => {
+      const d = toDate(v);
+      return d ? d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '—';
+    };
+
+    const isSameDay = (a, b) =>
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate();
+
+    const stamp = () => {
+      const d = new Date();
+      const p = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+    };
+
+    /* ------------------------------------------------------------
+     * 1. Icons (inline — no network dependency, always renders)
+     * ---------------------------------------------------------- */
+    const ICONS = {
+      grid: '<rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/>',
+      list: '<path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.1"/><circle cx="3.5" cy="12" r="1.1"/><circle cx="3.5" cy="18" r="1.1"/>',
+      sliders: '<path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h9M17 18h3"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="15" cy="18" r="2"/>',
+      printer: '<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="7" rx="2"/><path d="M6 14h12v7H6z"/>',
+      refresh: '<path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/>',
+      clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+      check: '<path d="M20 6 9 17l-5-5"/>',
+      checkCircle: '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/>',
+      x: '<path d="M18 6 6 18M6 6l12 12"/>',
+      chevron: '<path d="m9 6 6 6-6 6"/>',
+      trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/>',
+      download: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/>',
+      alert: '<path d="M12 3 2 20h20L12 3z"/><path d="M12 9v5"/><circle cx="12" cy="17" r=".7"/>',
+      search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+      file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
+      banknote: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>',
+      box: '<path d="m21 8-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+      eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+      database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>'
+    };
+
+    function icon(name, size = 18) {
+      const paths = ICONS[name] || ICONS.file;
+      return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+    }
+
+    /** Fill every element that declares data-icon / data-icon-label. */
+    function hydrateIcons(root = document) {
+      $$('[data-icon]', root).forEach((el) => {
+        if (el.dataset.iconDone === '1') return;
+        el.innerHTML = icon(el.dataset.icon, 18);
+        el.dataset.iconDone = '1';
+      });
+      $$('[data-icon-label]', root).forEach((el) => {
+        if (el.dataset.iconDone === '1') return;
+        el.insertAdjacentHTML('afterbegin', icon(el.dataset.iconLabel, 18));
+        el.dataset.iconDone = '1';
+      });
+    }
+
+    /* ------------------------------------------------------------
+     * 2. Domain constants
+     * ---------------------------------------------------------- */
+    const DB_NAME = 'SmartXeroxDB';
+    const CHANNEL = 'SmartXeroxOrders';
+
+    const FLOW = ['Pending', 'Printing', 'Ready', 'Completed'];
+
+    const STATUS_META = {
+      Pending:   { cls: 'pending',   label: 'Pending' },
+      Printing:  { cls: 'printing',  label: 'Printing' },
+      Ready:     { cls: 'ready',     label: 'Ready for pickup' },
+      Completed: { cls: 'completed', label: 'Completed' },
+      Cancelled: { cls: 'cancelled', label: 'Cancelled' }
+    };
+
+    const ADVANCE_LABEL = {
+      Pending: 'Start printing',
+      Printing: 'Mark ready',
+      Ready: 'Mark collected'
+    };
+
+    const POLL_MS = 5000;
+
+    /* ------------------------------------------------------------
+     * 3. State
+     * ---------------------------------------------------------- */
+    const state = {
+      view: 'dashboard',
+      orders: [],
+      loaded: false,
+      sig: '',
+      dbError: false,
+      detailId: null,
+      filter: 'all',
+      search: '',
+      docCount: null,
+      busy: false
+    };
+
+    let pendingConfirm = null;
+    let pollTimer = null;
+    let bc = null;
+
+    /* ------------------------------------------------------------
+     * 4. IndexedDB layer
+     * ---------------------------------------------------------- */
+    let dbPromise = null;
+
+    function getDB() {
+      if (!dbPromise) {
+        dbPromise = new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error('IndexedDB is not available in this browser.'));
+            return;
+          }
+          let req;
+          try {
+            /* No version on purpose: reuse the customer app's database
+               whether it already exists or needs to be created. */
+            req = indexedDB.open(DB_NAME);
+          } catch (err) {
+            reject(err);
+            return;
+          }
+          req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains('documents')) {
+              db.createObjectStore('documents', { keyPath: 'id' });
+            }
+            if (!db.objectStoreNames.contains('orders')) {
+              db.createObjectStore('orders', { keyPath: 'id' });
+            }
+          };
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error || new Error('Could not open the database.'));
+          req.onblocked = () => reject(new Error('The database is blocked by another tab.'));
+        }).catch((err) => {
+          dbPromise = null;
+          throw err;
+        });
+      }
+      return dbPromise;
+    }
+
+    function dbRequest(storeName, mode, run) {
+      return getDB().then((db) => new Promise((resolve, reject) => {
+        let transaction;
+        try {
+          transaction = db.transaction(storeName, mode);
+        } catch (err) {
+          reject(err);
+          return;
+        }
+        const store = transaction.objectStore(storeName);
+        let req;
+        try {
+          req = run(store);
+        } catch (err) {
+          reject(err);
+          return;
+        }
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error('Database request failed.'));
+      }));
+    }
+
+    const getAllOrders = () => dbRequest('orders', 'readonly', (s) => s.getAll());
+    const getOrder = (id) => dbRequest('orders', 'readonly', (s) => s.get(id));
+    const putOrder = (order) => dbRequest('orders', 'readwrite', (s) => s.put(order));
+    const deleteOrder = (id) => dbRequest('orders', 'readwrite', (s) => s.delete(id));
+    const countDocuments = () => dbRequest('documents', 'readonly', (s) => s.count());
+
+    /* ------------------------------------------------------------
+     * 5. Cross-tab broadcast (same protocol as the customer app)
+     * ---------------------------------------------------------- */
+    function connectChannel() {
+      try {
+        bc = new BroadcastChannel(CHANNEL);
+        bc.onmessage = (event) => {
+          const data = event.data;
+          if (!data || data.type !== 'order-status') return;
+          /* Another admin tab changed something — refresh quietly. */
+          loadAll({ notify: false });
+        };
+      } catch (_) {
+        bc = null; /* BroadcastChannel unsupported — polling still works */
+      }
+    }
+
+    function broadcastOrder(order) {
+      if (!bc) return;
+      try {
+        bc.postMessage({
+          type: 'order-status',
+          id: order.id,
+          status: order.status,
+          paymentStatus: order.paymentStatus
+        });
+      } catch (_) { /* ignore */ }
+    }
+
+    /* ------------------------------------------------------------
+     * 6. Order helpers
+     * ---------------------------------------------------------- */
+    function orderDocs(order) {
+      if (Array.isArray(order.docs)) return order.docs;
+      if (Array.isArray(order.items)) return order.items;
+      if (Array.isArray(order.documents)) return order.documents;
+      return [];
+    }
+
+    function orderPages(order) {
+      const docs = orderDocs(order);
+      const sum = docs.reduce((n, d) => n + (Number(d && d.pages) || 0), 0);
+      return sum || Number(order.pages) || 0;
+    }
+
+    const queueLabel = (order) =>
+      order && order.queue !== undefined && order.queue !== null && order.queue !== ''
+        ? '#' + order.queue
+        : '—';
+
+    const isFinished = (order) =>
+      order && (order.status === 'Completed' || order.status === 'Cancelled');
+
+    function statusBadge(status) {
+      const meta = STATUS_META[status] || { cls: 'pending', label: status || 'Unknown' };
+      return `<span class="sbadge ${meta.cls}"><span class="dot"></span>${esc(meta.label)}</span>`;
+    }
+
+    function nextStatus(status) {
+      const i = FLOW.indexOf(status);
+      return i >= 0 && i < FLOW.length - 1 ? FLOW[i + 1] : null;
+    }
+
+    function paidLabel(order) {
+      const method = order.paymentMethod || 'Payment';
+      if (order.paymentStatus === 'Paid') return `${method} · paid`;
+      if (order.paymentStatus === 'Pending') return `${method} · unpaid`;
+      return order.paymentStatus ? `${method} · ${order.paymentStatus}` : method;
+    }
+
+    function findOrder(id) {
+      return state.orders.find((o) => o.id === id) || null;
+    }
+
+    /* ------------------------------------------------------------
+     * 7. Loading
+     * ---------------------------------------------------------- */
+    async function loadAll({ notify = false } = {}) {
+      let orders;
+      try {
+        orders = await getAllOrders();
+        state.dbError = false;
+      } catch (err) {
+        console.warn('[admin] could not read orders:', err);
+        state.dbError = true;
+        render();
+        return;
+      }
+
+      orders.sort((a, b) => {
+        const da = toDate(a.created);
+        const db = toDate(b.created);
+        return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
+      });
+
+      if (notify && state.loaded) {
+        const known = new Set(state.orders.map((o) => o.id));
+        const fresh = orders.filter((o) => !known.has(o.id));
+        if (fresh.length) {
+          const names = fresh.slice(0, 3).map(queueLabel).join(', ');
+          toast(`New order${fresh.length > 1 ? 's' : ''} received — ${names}`);
+        }
+      }
+
+      const sig = orders
+        .map((o) => [o.id, o.status, o.paymentStatus, o.amount].join(':'))
+        .join('|');
+
+      if (state.loaded && sig === state.sig) {
+        return; /* nothing changed — do not re-render */
+      }
+
+      state.orders = orders;
+      state.sig = sig;
+      state.loaded = true;
+      render();
+    }
+
+    async function loadDocumentCount() {
+      try {
+        state.docCount = await countDocuments();
+      } catch (_) {
+        state.docCount = null;
+      }
+    }
+
+    /* ------------------------------------------------------------
+     * 8. Toast
+     * ---------------------------------------------------------- */
+    let toastTimer = null;
+    function toast(message) {
+      const el = $('#toast');
+      if (!el) return;
+      el.textContent = message;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+    }
+
+    /* ------------------------------------------------------------
+     * 9. Render
+     * ---------------------------------------------------------- */
+    function render() {
+      /* Keep focus/caret if the orders search box is being typed in. */
+      const active = document.activeElement;
+      const restoreSearch = active && active.id === 'order-search';
+      const caret = restoreSearch ? active.selectionStart : null;
+
+      /* Navigation highlighting */
+      $$('[data-nav]').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.nav === state.view);
+      });
+
+      /* Sync pill */
+      $$('.sync-pill').forEach((pill) => {
+        pill.classList.toggle('ok', !state.dbError);
+        pill.classList.toggle('err', state.dbError);
+        const txt = pill.querySelector('.txt');
+        if (txt) txt.textContent = state.dbError ? 'Storage error' : 'Live sync';
+      });
+
+      const view = $('#view');
+      switch (state.view) {
+        case 'orders':   view.innerHTML = ordersView(); break;
+        case 'settings': view.innerHTML = settingsView(); break;
+        default:         view.innerHTML = dashboardView();
+      }
+
+      renderDrawer();
+      hydrateIcons(view);
+
+      if (restoreSearch) {
+        const input = $('#order-search');
+        if (input) {
+          input.focus();
+          try { input.setSelectionRange(caret, caret); } catch (_) { /* ignore */ }
+        }
+      }
+    }
+
+    /* ------------------------------------------------------------
+     * 10. Views
+     * ---------------------------------------------------------- */
+    function errorBanner() {
+      if (!state.dbError) return '';
+      return `
+        <div class="alert">
+          ${icon('alert', 17)}
+          <div>
+            <strong>Local storage could not be read</strong>
+            Open the Smart Xerox customer app once in this browser so the local
+            database is created, then tap Refresh. Private windows may block storage.
+          </div>
+        </div>`;
+    }
+
+    /* ---------------- Dashboard ---------------- */
+    function dashboardView() {
+      const now = new Date();
+      const todays = state.orders.filter((o) => {
+        const d = toDate(o.created);
+        return d && isSameDay(d, now);
+      });
+      const active = state.orders
+        .filter((o) => !isFinished(o))
+        .slice()
+        .sort((a, b) => {
+          const da = toDate(a.created);
+          const db = toDate(b.created);
+          return (da ? da.getTime() : 0) - (db ? db.getTime() : 0);
+        });
+
+      const printing = active.filter((o) => o.status === 'Printing').length;
+      const pending = active.filter((o) => o.status === 'Pending').length;
+
+      const revenueToday = todays
+        .filter((o) => o.status !== 'Cancelled')
+        .reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+
+      const completedToday = todays.filter((o) => o.status === 'Completed').length;
+      const unpaidActive = active.filter((o) => o.paymentStatus !== 'Paid').length;
+
+      const queueRows = active.length
+        ? active.map(queueRow).join('')
+        : `<div class="empty">
+             ${icon('checkCircle', 30)}
+             <strong>No active orders</strong>
+             <p>You're all caught up. New orders will appear here automatically.</p>
+           </div>`;
+
+      const recent = state.orders.slice(0, 5);
+      const recentRows = recent.length
+        ? recent.map(orderCard).join('')
+        : `<div class="empty">
+             ${icon('box', 30)}
+             <strong>No orders yet</strong>
+             <p>Orders placed in the customer app show up here instantly.</p>
+           </div>`;
+
+      return `
+        ${errorBanner()}
+
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">SMART XEROX · ADMIN</div>
+            <h1>Dashboard</h1>
+            <p>Live overview of your print queue, payments and today's activity.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn ghost" data-act="refresh">
+              ${icon('refresh', 15)} Refresh
+            </button>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-top">
+              <span class="stat-ic">${icon('box', 15)}</span>
+              <span class="stat-label">Orders today</span>
+            </div>
+            <div class="stat-value">${todays.length}</div>
+            <div class="stat-sub">${state.orders.length} all time</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <span class="stat-ic amber">${icon('clock', 15)}</span>
+              <span class="stat-label">In queue</span>
+            </div>
+            <div class="stat-value">${active.length}</div>
+            <div class="stat-sub">${pending} waiting · ${printing} printing</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <span class="stat-ic green">${icon('banknote', 15)}</span>
+              <span class="stat-label">Revenue today</span>
+            </div>
+            <div class="stat-value">${money(revenueToday)}</div>
+            <div class="stat-sub">${unpaidActive} active unpaid</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <span class="stat-ic green">${icon('checkCircle', 15)}</span>
+              <span class="stat-label">Completed today</span>
+            </div>
+            <div class="stat-value">${completedToday}</div>
+            <div class="stat-sub">${todays.filter((o) => o.status === 'Cancelled').length} cancelled</div>
+          </div>
+        </div>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Live queue</h2>
+            <small>${active.length} order${active.length === 1 ? '' : 's'} in progress</small>
+          </div>
+          <div class="queue-list">${queueRows}</div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2>Recent orders</h2>
+            <small>Latest activity</small>
+          </div>
+          <div class="queue-list">${recentRows}</div>
+        </section>
+      `;
+    }
+
+    function queueRow(order) {
+      const docs = orderDocs(order).length;
+      const next = nextStatus(order.status);
+      return `
+        <div class="q-row">
+          <div class="q-num">${esc(queueLabel(order))}</div>
+          <div class="q-body">
+            <div class="q-line1">
+              <strong>${docs} document${docs === 1 ? '' : 's'} · ${orderPages(order)} page${orderPages(order) === 1 ? '' : 's'}</strong>
+              ${statusBadge(order.status)}
+            </div>
+            <div class="q-line2">
+              <span>${money(order.amount)}</span>
+              <span>${esc(paidLabel(order))}</span>
+              <span>${esc(fmtTime(order.created))}</span>
+            </div>
+          </div>
+          <div class="q-actions">
+            ${next ? `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[order.status] || 'Advance')}</button>` : ''}
+            <button class="mini" data-act="detail" data-id="${esc(order.id)}">
+              ${icon('eye', 13)} View
+            </button>
+          </div>
+        </div>`;
+    }
+
+    /* ---------------- Orders ---------------- */
+    function ordersView() {
+      const counts = {
+        all: state.orders.length,
+        Pending: 0,
+        Printing: 0,
+        Ready: 0,
+        Completed: 0,
+        Cancelled: 0
+      };
+      state.orders.forEach((o) => {
+        if (counts[o.status] !== undefined) counts[o.status] += 1;
+      });
+
+      const query = state.search.trim().toLowerCase();
+      const filtered = state.orders.filter((o) => {
+        if (state.filter !== 'all' && o.status !== state.filter) return false;
+        if (!query) return true;
+        const haystack = [
+          o.queue, o.id, o.paymentMethod, o.paymentStatus,
+          ...orderDocs(o).map((d) => (d && d.name) || '')
+        ].join(' ').toLowerCase();
+        return haystack.includes(query);
+      });
+
+      const chips = [
+        ['all', 'All', counts.all],
+        ['Pending', 'Pending', counts.Pending],
+        ['Printing', 'Printing', counts.Printing],
+        ['Ready', 'Ready', counts.Ready],
+        ['Completed', 'Completed', counts.Completed],
+        ['Cancelled', 'Cancelled', counts.Cancelled]
+      ];
+
+      const list = filtered.length
+        ? filtered.map(orderCard).join('')
+        : `<div class="empty">
+             ${icon('search', 30)}
+             <strong>No matching orders</strong>
+             <p>Try a different search term or status filter.</p>
+           </div>`;
+
+      return `
+        ${errorBanner()}
+
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">SMART XEROX · ADMIN</div>
+            <h1>Orders</h1>
+            <p>Search, filter and update every print order placed in the shop.</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn ghost" data-act="refresh">${icon('refresh', 15)} Refresh</button>
+            <button class="btn" data-act="export">${icon('download', 15)} Export CSV</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            ${icon('search', 15)}
+            <input id="order-search" class="search-input" type="search"
+                   placeholder="Search queue number, order ID or file name…"
+                   value="${esc(state.search)}" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="chips" style="margin-bottom:16px">
+          ${chips.map(([key, label, n]) => `
+            <button class="chip-btn ${state.filter === key ? 'active' : ''}"
+                    data-act="filter" data-filter="${key}">
+              ${esc(label)} <span class="n">${n}</span>
+            </button>`).join('')}
+        </div>
+
+        <div class="queue-list">${list}</div>
+      `;
+    }
+
+    function orderCard(order) {
+      const docs = orderDocs(order).length;
+      const next = nextStatus(order.status);
+      return `
+        <article class="order-card">
+          <div class="oc-main">
+            <div class="oc-q">
+              <span class="oc-q-label">QUEUE</span>
+              <strong>${esc(queueLabel(order))}</strong>
+            </div>
+            <div class="oc-info">
+              <div class="oc-title">${docs} document${docs === 1 ? '' : 's'} · ${orderPages(order)} page${orderPages(order) === 1 ? '' : 's'}</div>
+              <div class="oc-sub">${esc(fmt(order.created))} · ${esc(paidLabel(order))}</div>
+            </div>
+            <div class="oc-right">
+              ${statusBadge(order.status)}
+              <strong class="oc-amt">${money(order.amount)}</strong>
+            </div>
+          </div>
+          <div class="oc-actions">
+            ${next ? `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[order.status] || 'Advance')}</button>` : ''}
+            <button class="mini" data-act="detail" data-id="${esc(order.id)}">${icon('eye', 13)} Details</button>
+            ${!isFinished(order)
+              ? `<button class="mini danger" data-act="ask-cancel" data-id="${esc(order.id)}">${icon('x', 13)} Cancel</button>`
+              : ''}
+          </div>
+        </article>`;
+    }
+
+    /* ---------------- Settings ---------------- */
+    function settingsView() {
+      return `
+        ${errorBanner()}
+
+        <div class="page-head">
+          <div>
+            <div class="eyebrow">SMART XEROX · ADMIN</div>
+            <h1>Settings</h1>
+            <p>Storage health, data exports and the pricing rules applied by the customer app.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Storage &amp; connection</h3>
+          <p class="hint">The admin console reads and writes the same local database as the customer app.</p>
+          <div class="kv"><span>Database</span><strong>${state.dbError ? 'Unavailable' : 'Connected'}</strong></div>
+          <div class="kv"><span>Orders stored</span><strong>${state.orders.length}</strong></div>
+          <div class="kv"><span>Documents stored</span><strong>${state.docCount === null ? '—' : state.docCount}</strong></div>
+          <div class="kv"><span>Live updates</span><strong>${bc ? 'BroadcastChannel active' : 'Polling every 5s'}</strong></div>
+        </div>
+
+        <div class="card">
+          <h3>Export</h3>
+          <p class="hint">Download every order as a spreadsheet-friendly CSV file.</p>
+          <div class="row-actions">
+            <button class="btn ghost" data-act="export">${icon('download', 15)} Export orders (CSV)</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Pricing reference</h3>
+          <p class="hint">
+            These rules are applied by the customer app when a price is calculated.
+            Changing them here would require an update to the customer app.
+          </p>
+          <table class="price-table">
+            <thead>
+              <tr><th>Item</th><th>Rate</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Black &amp; white print</td><td>₹2.00 / sheet</td></tr>
+              <tr><td>Colour print</td><td>₹8.00 / sheet</td></tr>
+              <tr><td>A4 paper</td><td>× 1.00</td></tr>
+              <tr><td>A3 paper</td><td>× 2.00</td></tr>
+              <tr><td>A5 paper</td><td>× 0.80</td></tr>
+              <tr><td>Letter paper</td><td>× 1.10</td></tr>
+              <tr><td>Legal paper</td><td>× 1.35</td></tr>
+              <tr><td>Double-sided</td><td>2 pages / sheet</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Maintenance</h3>
+          <p class="hint">Housekeeping tasks for the local order database.</p>
+          <div class="row-actions">
+            <button class="btn ghost" data-act="clear-finished">${icon('trash', 15)} Clear completed &amp; cancelled</button>
+            <button class="btn danger" data-act="reset-all">${icon('alert', 15)} Reset all data</button>
+          </div>
+        </div>
+      `;
+    }
+
+    /* ------------------------------------------------------------
+     * 11. Order drawer
+     * ---------------------------------------------------------- */
+    function renderDrawer() {
+      const overlay = $('#drawer-overlay');
+      const body = $('#drawer-body');
+      if (!overlay || !body) return;
+
+      const order = state.detailId ? findOrder(state.detailId) : null;
+
+      if (!order) {
+        if (state.detailId) state.detailId = null;
+        overlay.classList.remove('open');
+        body.innerHTML = '';
+        return;
+      }
+
+      body.innerHTML = drawerContent(order);
+      overlay.classList.add('open');
+      hydrateIcons(body);
+    }
+
+    function drawerContent(order) {
+      const docs = orderDocs(order);
+      const paid = order.paymentStatus === 'Paid';
+
+      const docList = docs.length
+        ? docs.map(drawerDoc).join('')
+        : `<p class="dw-muted">No document snapshot was stored with this order.</p>`;
+
+      const statusOptions = FLOW
+        .concat(['Cancelled'])
+        .map((status) => {
+          const cls = status === 'Cancelled' ? 'cancel' : '';
+          const active = order.status === status ? 'active' : '';
+          return `<button class="status-opt ${cls} ${active}"
+                          data-act="set-status" data-id="${esc(order.id)}" data-status="${status}">
+                    ${esc(STATUS_META[status] ? STATUS_META[status].label : status)}
+                  </button>`;
+        })
+        .join('');
+
+      return `
+        <div class="dw-head">
+          <div>
+            <div class="eyebrow">ORDER DETAILS</div>
+            <h2>${esc(queueLabel(order))}</h2>
+            <div style="margin-top:7px">${statusBadge(order.status)}</div>
+          </div>
+          <button class="dw-close" data-act="close-drawer" aria-label="Close order details">
+            ${icon('x', 16)}
+          </button>
+        </div>
+
+        <div class="dw-content">
+          <div class="dw-amount">
+            <small>Total amount</small>
+            <strong>${money(order.amount)}</strong>
+          </div>
+
+          <div class="dw-grid">
+            <div class="dw-cell">
+              <small>Placed</small>
+              <strong title="${esc(fmt(order.created))}">${esc(fmt(order.created))}</strong>
+            </div>
+            <div class="dw-cell">
+              <small>Payment</small>
+              <strong>${esc(order.paymentMethod || '—')} · ${paid ? 'Paid' : 'Unpaid'}</strong>
+            </div>
+            <div class="dw-cell" style="grid-column:1 / -1">
+              <small>Order ID</small>
+              <strong style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px">
+                ${esc(order.id)}
+              </strong>
+            </div>
+          </div>
+
+          <div class="dw-section">
+            <h3>Documents <span class="count">${docs.length}</span></h3>
+            ${docList}
+          </div>
+
+          <div class="dw-section">
+            <h3>Update status</h3>
+            <div class="status-grid">${statusOptions}</div>
+          </div>
+
+          <div class="dw-section">
+            <h3>Payment</h3>
+            <button class="btn ghost full" data-act="toggle-paid" data-id="${esc(order.id)}">
+              ${paid ? 'Mark as unpaid' : 'Mark as paid'}
+            </button>
+          </div>
+
+          <button class="dw-delete" data-act="ask-delete" data-id="${esc(order.id)}">
+            ${icon('trash', 13)} Delete this order
+          </button>
+        </div>`;
+    }
+
+    function drawerDoc(doc) {
+      if (!doc || typeof doc !== 'object') return '';
+      const cfg = doc.cfg || {};
+      const chips = [];
+
+      if (cfg.colour) chips.push(cfg.colour);
+      if (cfg.paper) chips.push(cfg.paper);
+      if (cfg.copies) chips.push(`${cfg.copies} ${Number(cfg.copies) === 1 ? 'copy' : 'copies'}`);
+      if (cfg.perSheet) chips.push(`${cfg.perSheet} / sheet`);
+      if (cfg.sides) chips.push(cfg.sides);
+      if (cfg.orientation) chips.push(cfg.orientation);
+      if (cfg.pagesMode) chips.push(cfg.pagesMode);
+      if (cfg.pagesMode === 'Custom Range' && cfg.range) chips.push('Pages ' + cfg.range);
+
+      const pages = Number(doc.pages) || 0;
+
+      return `
+        <div class="dw-doc">
+          <div class="dw-doc-ic">${icon('file', 16)}</div>
+          <div class="dw-doc-body">
+            <strong title="${esc(doc.name || 'Document')}">${esc(doc.name || 'Document')}</strong>
+            <small>${pages} page${pages === 1 ? '' : 's'}</small>
+            ${chips.length
+              ? `<div class="dw-chips">${chips.map((c) => `<span>${esc(c)}</span>`).join('')}</div>`
+              : ''}
+          </div>
+        </div>`;
+    }
+
+    function openDetail(id) {
+      if (!findOrder(id)) return;
+      state.detailId = id;
+      renderDrawer();
+    }
+
+    function closeDrawer() {
+      state.detailId = null;
+      renderDrawer();
+    }
+
+    /* ------------------------------------------------------------
+     * 12. Confirm dialog
+     * ---------------------------------------------------------- */
+    function openConfirm({ title, message, confirmLabel = 'Confirm', danger = false, onConfirm }) {
+      pendingConfirm = onConfirm || null;
+      const card = $('#confirm-card');
+      card.innerHTML = `
+        <div class="confirm-icon ${danger ? 'danger' : ''}">${icon(danger ? 'alert' : 'checkCircle', 25)}</div>
+        <h3>${esc(title)}</h3>
+        <p>${esc(message)}</p>
+        <div class="confirm-actions">
+          <button class="btn ghost" data-act="confirm-no">Cancel</button>
+          <button class="btn ${danger ? 'danger' : ''}" data-act="confirm-yes">${esc(confirmLabel)}</button>
+        </div>`;
+      $('#confirm-overlay').classList.add('open');
+    }
+
+    function closeConfirm() {
+      pendingConfirm = null;
+      $('#confirm-overlay').classList.remove('open');
+      $('#confirm-card').innerHTML = '';
+    }
+
+    /* ------------------------------------------------------------
+     * 13. Mutations
+     * ---------------------------------------------------------- */
+    async function updateOrder(id, patch) {
+      const order = await getOrder(id);
+      if (!order) throw new Error('This order no longer exists.');
+      Object.assign(order, patch);
+      await putOrder(order);
+      broadcastOrder(order);
+      return order;
+    }
+
+    async function setOrderStatus(id, status) {
+      const order = findOrder(id);
+      if (!order) return;
+      if (order.status === status) {
+        toast(`${queueLabel(order)} is already ${status.toLowerCase()}.`);
+        return;
+      }
+      await updateOrder(id, { status });
+      toast(`${queueLabel(order)} → ${STATUS_META[status] ? STATUS_META[status].label : status}`);
+      await loadAll({ notify: false });
+    }
+
+    async function advanceOrder(id) {
+      const order = findOrder(id);
+      if (!order) return;
+      const next = nextStatus(order.status);
+      if (!next) {
+        toast('This order is already finished.');
+        return;
+      }
+      await setOrderStatus(id, next);
+    }
+
+    async function togglePaid(id) {
+      const order = findOrder(id);
+      if (!order) return;
+      const next = order.paymentStatus === 'Paid' ? 'Pending' : 'Paid';
+      await updateOrder(id, { paymentStatus: next });
+      toast(`${queueLabel(order)} marked as ${next === 'Paid' ? 'paid' : 'unpaid'}.`);
+      await loadAll({ notify: false });
+    }
+
+    function askCancel(id) {
+      const order = findOrder(id);
+      if (!order) return;
+      openConfirm({
+        title: 'Cancel this order?',
+        message: `${queueLabel(order)} will be marked as cancelled. The customer will see the updated status immediately.`,
+        confirmLabel: 'Cancel order',
+        danger: true,
+        onConfirm: async () => {
+          await updateOrder(id, { status: 'Cancelled' });
+          toast(`${queueLabel(order)} cancelled.`);
+          await loadAll({ notify: false });
+        }
+      });
+    }
+
+    function askDelete(id) {
+      const order = findOrder(id);
+      if (!order) return;
+      openConfirm({
+        title: 'Delete this order?',
+        message: `${queueLabel(order)} will be permanently removed from this device. This cannot be undone.`,
+        confirmLabel: 'Delete',
+        danger: true,
+        onConfirm: async () => {
+          await deleteOrder(id);
+          if (state.detailId === id) state.detailId = null;
+          toast(`${queueLabel(order)} deleted.`);
+          await loadAll({ notify: false });
+        }
+      });
+    }
+
+    function askClearFinished() {
+      const finished = state.orders.filter(isFinished);
+      if (!finished.length) {
+        toast('There are no finished orders to clear.');
+        return;
+      }
+      openConfirm({
+        title: `Clear ${finished.length} finished order${finished.length === 1 ? '' : 's'}?`,
+        message: 'Completed and cancelled orders will be permanently removed from this device.',
+        confirmLabel: 'Clear orders',
+        danger: true,
+        onConfirm: async () => {
+          const db = await getDB();
+          const transaction = db.transaction('orders', 'readwrite');
+          const store = transaction.objectStore('orders');
+          const requests = finished.map((o) => store.delete(o.id));
+          await Promise.all(requests.map((req) => new Promise((resolve, reject) => {
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error || new Error('Delete failed'));
+          })));
+          toast('Finished orders cleared.');
+          await loadAll({ notify: false });
+        }
+      });
+    }
+
+    function askResetAll() {
+      openConfirm({
+        title: 'Reset all local data?',
+        message: 'Every order and stored document will be erased from this browser. Close other tabs of the app first. This cannot be undone.',
+        confirmLabel: 'Erase everything',
+        danger: true,
+        onConfirm: async () => {
+          if (dbPromise) {
+            try {
+              const db = await dbPromise;
+              db.close();
+            } catch (_) { /* ignore */ }
+          }
+          dbPromise = null;
+
+          await new Promise((resolve, reject) => {
+            const req = indexedDB.deleteDatabase(DB_NAME);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error || new Error('Delete failed'));
+            req.onblocked = () => reject(new Error('Another tab is using the database. Close it and try again.'));
+          });
+
+          state.orders = [];
+          state.sig = '';
+          state.loaded = false;
+          state.detailId = null;
+          state.docCount = 0;
+          toast('All local data erased.');
+          await loadAll({ notify: false });
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------
+     * 14. CSV export
+     * ---------------------------------------------------------- */
+    function exportCSV() {
+      if (!state.orders.length) {
+        toast('There are no orders to export yet.');
+        return;
+      }
+      const rows = [[
+        'Queue', 'Order ID', 'Placed', 'Status', 'Payment method',
+        'Payment status', 'Amount (INR)', 'Documents', 'Pages', 'File names'
+      ]];
+
+      state.orders.forEach((o) => {
+        const docs = orderDocs(o);
+        rows.push([
+          o.queue ?? '',
+          o.id ?? '',
+          fmt(o.created),
+          o.status ?? '',
+          o.paymentMethod ?? '',
+          o.paymentStatus ?? '',
+          Number(o.amount || 0).toFixed(2),
+          docs.length,
+          orderPages(o),
+          docs.map((d) => (d && d.name) || '').join('; ')
+        ]);
+      });
+
+      const csv = rows
+        .map((row) => row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))
+        .join('\r\n');
+
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `smartxerox-orders-${stamp()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
+
+      toast(`Exported ${state.orders.length} order${state.orders.length === 1 ? '' : 's'}.`);
+    }
+
+    /* ------------------------------------------------------------
+     * 15. Navigation & actions
+     * ---------------------------------------------------------- */
+    async function navigate(view) {
+      if (!['dashboard', 'orders', 'settings'].includes(view)) return;
+      state.view = view;
+      if (view === 'settings') {
+        await loadDocumentCount();
+      }
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function handleAction(act, data) {
+      switch (act) {
+        case 'refresh': {
+          await loadAll({ notify: false });
+          if (state.view === 'settings') await loadDocumentCount();
+          render();
+          toast('Refreshed.');
+          break;
+        }
+        case 'detail':
+          openDetail(data.id);
+          break;
+        case 'close-drawer':
+          closeDrawer();
+          break;
+        case 'advance':
+          await advanceOrder(data.id);
+          break;
+        case 'set-status':
+          await setOrderStatus(data.id, data.status);
+          break;
+        case 'toggle-paid':
+          await togglePaid(data.id);
+          break;
+        case 'ask-cancel':
+          askCancel(data.id);
+          break;
+        case 'ask-delete':
+          askDelete(data.id);
+          break;
+        case 'filter':
+          state.filter = data.filter || 'all';
+          render();
+          break;
+        case 'export':
+          exportCSV();
+          break;
+        case 'clear-finished':
+          askClearFinished();
+          break;
+        case 'reset-all':
+          askResetAll();
+          break;
+        case 'confirm-yes': {
+          const run = pendingConfirm;
+          closeConfirm();
+          if (run) {
+            try {
+              await run();
+            } catch (err) {
+              console.error('[admin]', err);
+              toast(err && err.message ? err.message : 'Something went wrong.');
+            }
+          }
+          break;
+        }
+        case 'confirm-no':
+          closeConfirm();
+          break;
+        default:
+          break;
+      }
+    }
+
+    /* ------------------------------------------------------------
+     * 16. Global event wiring
+     * ---------------------------------------------------------- */
+    document.addEventListener('click', (event) => {
+      const navBtn = event.target.closest('[data-nav]');
+      if (navBtn) {
+        event.preventDefault();
+        navigate(navBtn.dataset.nav);
+        return;
+      }
+
+      const actionEl = event.target.closest('[data-act]');
+      if (actionEl) {
+        event.preventDefault();
+        handleAction(actionEl.dataset.act, actionEl.dataset).catch((err) => {
+          console.error('[admin]', err);
+          toast(err && err.message ? err.message : 'Something went wrong.');
+        });
+      }
+    });
+
+    document.addEventListener('input', (event) => {
+      if (event.target && event.target.id === 'order-search') {
+        state.search = event.target.value;
+        /* Re-render only the list area, keeping the input untouched. */
+        const list = event.target.closest('.content').querySelector('.queue-list');
+        if (list) {
+          const query = state.search.trim().toLowerCase();
+          const filtered = state.orders.filter((o) => {
+            if (state.filter !== 'all' && o.status !== state.filter) return false;
+            if (!query) return true;
+            const haystack = [
+              o.queue, o.id, o.paymentMethod, o.paymentStatus,
+              ...orderDocs(o).map((d) => (d && d.name) || '')
+            ].join(' ').toLowerCase();
+            return haystack.includes(query);
+          });
+          list.innerHTML = filtered.length
+            ? filtered.map(orderCard).join('')
+            : `<div class="empty">
+                 ${icon('search', 30)}
+                 <strong>No matching orders</strong>
+                 <p>Try a different search term or status filter.</p>
+               </div>`;
+          hydrateIcons(list);
+        }
+      }
+    });
+
+    /* Close the drawer by tapping the backdrop */
+    $('#drawer-overlay').addEventListener('click', (event) => {
+      if (event.target === event.currentTarget) closeDrawer();
+    });
+
+    /* Close the confirm dialog by tapping the backdrop */
+    $('#confirm-overlay').addEventListener('click', (event) => {
+      if (event.target === event.currentTarget) closeConfirm();
+    });
+
+    /* Escape closes dialogs */
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if ($('#confirm-overlay').classList.contains('open')) {
+        closeConfirm();
+      } else if ($('#drawer-overlay').classList.contains('open')) {
+        closeDrawer();
+      }
+    });
+
+    /* Refresh when the tab becomes visible again */
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        loadAll({ notify: true });
+      }
+    });
+    window.addEventListener('focus', () => loadAll({ notify: true }));
+
+    /* ------------------------------------------------------------
+     * 17. Boot
+     * ---------------------------------------------------------- */
+    function startPolling() {
+      if (pollTimer) clearInterval(pollTimer);
+      pollTimer = setInterval(() => loadAll({ notify: true }), POLL_MS);
+    }
+
+    async function boot() {
+      hydrateIcons(document);
+      render();                    /* instant shell */
+      connectChannel();
+      await loadAll({ notify: false });
+      startPolling();
+    }
+
+    boot().catch((err) => {
+      console.error('[admin] boot failed', err);
+      toast('Could not start the admin console.');
+    });
+  </script>
+</body>
+</html>
