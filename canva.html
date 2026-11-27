@@ -1744,6 +1744,97 @@
         animation: paySlideUp .5s cubic-bezier(.2,.8,.3,1) .5s backwards;
       }
 
+            /* ===================== Profile tab + details gate ===================== */
+      .profile-card-lg { padding: 20px; }
+
+      .profile-id {
+        display: flex; align-items: center; gap: 14px;
+        padding-bottom: 16px; border-bottom: 1px dashed #e4ecf8;
+      }
+      .profile-avatar {
+        flex: none; width: 54px; height: 54px; border-radius: 17px;
+        display: grid; place-items: center;
+        font-size: 18px; font-weight: 800; letter-spacing: -.5px; color: #fff;
+        background: linear-gradient(135deg, #325cf4, #6f8cff);
+        box-shadow: 0 10px 22px #325cf436;
+      }
+      .profile-id-tx { min-width: 0; }
+      .profile-id-tx strong {
+        display: block; font-size: 15px; font-weight: 800; letter-spacing: -.3px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .profile-id-tx small {
+        display: block; font-size: 11.5px; color: var(--muted); font-weight: 600;
+        margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+
+      .pf-grid { display: grid; gap: 14px; margin-top: 16px; }
+      @media (min-width: 640px) {
+        .pf-grid { grid-template-columns: 1fr 1fr; }
+        .pf-grid .pf-row.wide { grid-column: 1 / -1; }
+      }
+      .pf-row { min-width: 0; }
+      .pf-label {
+        display: flex; align-items: center; gap: 6px;
+        font-size: 10.5px; font-weight: 800; letter-spacing: 1px;
+        text-transform: uppercase; color: #8a97ac; margin-bottom: 7px;
+      }
+      .pf-req { color: #e04c4c; }
+      .pf-opt {
+        font-size: 9px; font-weight: 800; letter-spacing: .7px;
+        color: #94a0b2; background: #f1f5fc; border-radius: 100px; padding: 2px 7px;
+      }
+      .pf-row .field { margin-top: 0; }
+      .pf-row .field.invalid { border-color: #e04c4c; box-shadow: 0 0 0 3px #e04c4c1a; }
+      .pf-err {
+        display: flex; align-items: center; gap: 5px;
+        font-size: 11px; font-weight: 700; color: #d14848; margin: 7px 0 0;
+      }
+      .pf-err svg { width: 12px; height: 12px; flex: none; }
+      .pf-err[hidden] { display: none; }
+
+      /* Details-gate modal */
+      .profile-gate {
+        position: fixed; inset: 0; z-index: 56;
+        background: #101b34a8; backdrop-filter: blur(5px);
+        display: none; align-items: center; justify-content: center; padding: 18px;
+      }
+      .profile-gate.open { display: flex; animation: fadeIn .22s ease-out; }
+      .profile-gate-card {
+        width: 100%; max-width: 430px; max-height: 92vh; overflow: auto;
+        background: #fff; border-radius: 24px; padding: 22px 22px 20px;
+        box-shadow: 0 28px 70px #101c3555;
+      }
+      .profile-gate.open .profile-gate-card { animation: confirmPop .34s cubic-bezier(.2,.8,.3,1.1); }
+
+      .pg-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 15px; }
+      .pg-icon {
+        width: 52px; height: 52px; border-radius: 16px;
+        background: linear-gradient(135deg, #eef2ff, #dbe4ff);
+        color: var(--blue); display: grid; place-items: center;
+        box-shadow: 0 8px 20px #325cf41f;
+      }
+      .pg-icon svg { width: 24px; height: 24px; }
+      .profile-gate-card h2 { font-size: 20px; font-weight: 800; letter-spacing: -.6px; margin: 0 0 8px; }
+      .profile-gate-card .sub { margin: 0 0 18px; font-size: 12.5px; line-height: 1.6; }
+      .pg-note {
+        display: flex; gap: 8px; align-items: flex-start;
+        margin-top: 16px; padding: 11px 13px; border-radius: 12px;
+        background: #f5f8ff; border: 1px solid #e4ecf8;
+        font-size: 11.5px; color: #5a6b86; font-weight: 600; line-height: 1.5;
+      }
+      .pg-note svg { width: 14px; height: 14px; color: var(--blue); flex: none; margin-top: 1px; }
+      .pg-actions { display: flex; gap: 9px; margin-top: 18px; }
+      .pg-actions .btn { flex: 1; }
+
+      @media (max-width: 520px) {
+        .profile-gate { align-items: flex-end; padding: 0; }
+        .profile-gate-card {
+          max-width: 100%; border-radius: 24px 24px 0 0; padding: 22px 20px 26px;
+        }
+        .profile-gate.open .profile-gate-card { animation: rise .3s ease-out; }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         *, *::before, *::after {
           animation-duration: .01ms !important;
@@ -1764,6 +1855,7 @@
           <button data-nav="home" class="active"><i data-lucide="house"></i> Home</button>
           <button data-nav="orders"><i data-lucide="package"></i> My Orders</button>
           <button data-nav="history"><i data-lucide="history"></i> History</button>
+          <button data-nav="profile"><i data-lucide="user-round"></i> Profile</button>
         </nav>
         <p class="sub" style="margin:auto 10px 5px;font-size:11px">Print simply. Pick up confidently.</p>
       </aside>
@@ -1787,6 +1879,7 @@
       <button data-nav="home" class="nav-btn active"><i data-lucide="house"></i><span>Home</span></button>
       <button data-nav="orders" class="nav-btn"><i data-lucide="package"></i><span>My Orders</span></button>
       <button data-nav="history" class="nav-btn"><i data-lucide="history"></i><span>History</span></button>
+      <button data-nav="profile" class="nav-btn"><i data-lucide="user-round"></i><span>Profile</span></button>
     </nav>
 
     <input id="files" class="canva-input" type="file"
@@ -1817,6 +1910,10 @@
 
     <div id="confirm-overlay" class="confirm-overlay" role="presentation">
       <div id="confirm-card" class="confirm-card" role="dialog" aria-modal="true"></div>
+    </div>
+
+    <div id="profile-gate" class="profile-gate" role="presentation">
+      <div id="profile-gate-card" class="profile-gate-card" role="dialog" aria-modal="true" aria-labelledby="pg-title"></div>
     </div>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -1877,7 +1974,8 @@
         ready: false,
         submitting: false,
         _memDocs: {},   // in-memory fallback when IndexedDB is unavailable
-        _memOrders: {}
+        _memOrders: {},
+        profile: { name: '', phone: '', email: '' }   // populated in init()
       };
 
       const defaultCfg = () => ({
@@ -1964,8 +2062,284 @@
         }
       }
 
+            /* =====================================================================
+       *  Profile — name / phone (required) + email (optional)
+       * ===================================================================== */
+      const PROFILE_KEY = 'smartxerox.profile';
+
+      function loadProfile() {
+        try {
+          const raw = localStorage.getItem(PROFILE_KEY);
+          if (!raw) return { name: '', phone: '', email: '' };
+          const p = JSON.parse(raw) || {};
+          return {
+            name: String(p.name || ''),
+            phone: String(p.phone || ''),
+            email: String(p.email || '')
+          };
+        } catch (_) {
+          return { name: '', phone: '', email: '' };
+        }
+      }
+
+      function persistProfile() {
+        try { localStorage.setItem(PROFILE_KEY, JSON.stringify(state.profile)); } catch (_) {}
+      }
+
+      function normalisePhone(v) {
+        let d = String(v || '').replace(/\D/g, '');
+        if (d.length > 10 && d.startsWith('91')) d = d.slice(-10);
+        if (d.length > 10 && d.startsWith('0')) d = d.slice(-10);
+        return d;
+      }
+
+      const validName  = (v) => String(v || '').trim().length >= 2;
+      const validPhone = (v) => /^\d{10}$/.test(normalisePhone(v));
+      const validEmail = (v) => !String(v || '').trim()
+        || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(v).trim());
+
+      function profileComplete() {
+        const p = state.profile || {};
+        return validName(p.name) && validPhone(p.phone);
+      }
+
+      function profileInitials() {
+        const parts = String((state.profile && state.profile.name) || '')
+          .trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return 'SX';
+        return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+      }
+
+      /* ---------- validation helpers ---------- */
+      function setFieldError(scope, key, msg) {
+        const box = scope.querySelector('[data-err="' + key + '"]');
+        const input = scope.querySelector('[data-pf="' + key + '"], [data-pmf="' + key + '"]');
+        if (box) {
+          if (msg) {
+            box.innerHTML = '<i data-lucide="alert-circle"></i>' + esc(msg);
+            box.hidden = false;
+          } else {
+            box.innerHTML = '';
+            box.hidden = true;
+          }
+        }
+        if (input) input.classList.toggle('invalid', !!msg);
+      }
+
+      function validateProfileFields(scope, get) {
+        let ok = true;
+        if (!validName(get('name'))) { setFieldError(scope, 'name', 'Please enter your full name.'); ok = false; }
+        else setFieldError(scope, 'name', '');
+        if (!validPhone(get('phone'))) { setFieldError(scope, 'phone', 'Enter a valid 10-digit mobile number.'); ok = false; }
+        else setFieldError(scope, 'phone', '');
+        if (!validEmail(get('email'))) { setFieldError(scope, 'email', 'That email address does not look right.'); ok = false; }
+        else setFieldError(scope, 'email', '');
+        return ok;
+      }
+
+      /* ---------- Profile tab view ---------- */
+      function profileView() {
+        const p = state.profile || { name: '', phone: '', email: '' };
+        const done = profileComplete();
+        return `
+          <section class="home-head">
+            <div class="home-greet">
+              <div class="eyebrow">YOUR ACCOUNT</div>
+              <h1>Profile</h1>
+              <p>Your name and phone number appear on every print order. They stay in this browser — nothing is uploaded.</p>
+            </div>
+            <div class="home-pill"><span class="dot" style="${done ? '' : 'background:#efa823;box-shadow:0 0 0 3px #efa82330'}"></span>${done ? 'Profile complete' : 'Details needed'}</div>
+          </section>
+
+          <div class="card profile-card-lg">
+            <div class="profile-id">
+              <div class="profile-avatar">${esc(profileInitials())}</div>
+              <div class="profile-id-tx">
+                <strong>${esc(p.name.trim() || 'Your name')}</strong>
+                <small>${p.phone ? '+91 ' + esc(normalisePhone(p.phone)) : 'Phone number not added'}${p.email ? ' · ' + esc(p.email) : ''}</small>
+              </div>
+            </div>
+
+            <div class="pf-grid">
+              <div class="pf-row">
+                <label class="pf-label" for="pf-name">Full name <span class="pf-req">*</span></label>
+                <input id="pf-name" class="field" data-pf="name" type="text" autocomplete="name"
+                       placeholder="e.g. Aarav Sharma" maxlength="60" value="${esc(p.name)}">
+                <p class="pf-err" data-err="name" hidden></p>
+              </div>
+              <div class="pf-row">
+                <label class="pf-label" for="pf-phone">Phone number <span class="pf-req">*</span></label>
+                <input id="pf-phone" class="field" data-pf="phone" type="tel" inputmode="numeric"
+                       autocomplete="tel" placeholder="10-digit mobile number" maxlength="14" value="${esc(p.phone)}">
+                <p class="pf-err" data-err="phone" hidden></p>
+              </div>
+              <div class="pf-row wide">
+                <label class="pf-label" for="pf-email">Email <span class="pf-opt">OPTIONAL</span></label>
+                <input id="pf-email" class="field" data-pf="email" type="email" autocomplete="email"
+                       placeholder="you@example.com" maxlength="80" value="${esc(p.email)}">
+                <p class="pf-err" data-err="email" hidden></p>
+              </div>
+            </div>
+
+            <button class="btn full" data-action="save-profile" style="margin-top:18px">
+              <i data-lucide="check"></i> Save details
+            </button>
+            <p class="hint" style="text-align:center">Name and phone number are required before you can pay.</p>
+          </div>`;
+      }
+
+      function saveProfileFromPage() {
+        const scope = document.querySelector('.profile-card-lg');
+        if (!scope) return;
+        const get = (k) => {
+          const el = scope.querySelector('[data-pf="' + k + '"]');
+          return el ? el.value : '';
+        };
+        if (!validateProfileFields(scope, get)) { icons(); return; }
+        state.profile = {
+          name: get('name').trim(),
+          phone: normalisePhone(get('phone')),
+          email: get('email').trim()
+        };
+        persistProfile();
+        toast('Profile saved');
+        render();
+      }
+
+      /* ---------- "Details needed" gate modal ---------- */
+      function renderProfileGate() {
+        const p = state.profile || { name: '', phone: '', email: '' };
+        const card = $('#profile-gate-card');
+        if (!card) return;
+        card.innerHTML = `
+          <div class="pg-head">
+            <div class="pg-icon"><i data-lucide="user-round-check"></i></div>
+            <button class="icon-btn" data-action="close-profile-gate" aria-label="Close"><i data-lucide="x"></i></button>
+          </div>
+          <h2 id="pg-title">Add your details to continue</h2>
+          <p class="sub">We need your <strong>name</strong> and <strong>phone number</strong> before we can create your print order. Your email is optional.</p>
+
+          <div class="pf-row">
+            <label class="pf-label" for="pg-name">Full name <span class="pf-req">*</span></label>
+            <input id="pg-name" class="field" data-pmf="name" type="text" autocomplete="name"
+                   placeholder="e.g. Aarav Sharma" maxlength="60" value="${esc(p.name)}">
+            <p class="pf-err" data-err="name" hidden></p>
+          </div>
+          <div class="pf-row" style="margin-top:12px">
+            <label class="pf-label" for="pg-phone">Phone number <span class="pf-req">*</span></label>
+            <input id="pg-phone" class="field" data-pmf="phone" type="tel" inputmode="numeric"
+                   autocomplete="tel" placeholder="10-digit mobile number" maxlength="14" value="${esc(p.phone)}">
+            <p class="pf-err" data-err="phone" hidden></p>
+          </div>
+          <div class="pf-row" style="margin-top:12px">
+            <label class="pf-label" for="pg-email">Email <span class="pf-opt">OPTIONAL</span></label>
+            <input id="pg-email" class="field" data-pmf="email" type="email" autocomplete="email"
+                   placeholder="you@example.com" maxlength="80" value="${esc(p.email)}">
+            <p class="pf-err" data-err="email" hidden></p>
+          </div>
+
+          <div class="pg-note"><i data-lucide="info"></i><span>You can change these anytime from the <strong>Profile</strong> tab in the menu.</span></div>
+
+          <div class="pg-actions">
+            <button class="btn ghost" data-action="close-profile-gate">Not now</button>
+            <button class="btn" data-action="save-profile-gate">Save &amp; continue <i data-lucide="arrow-right"></i></button>
+          </div>`;
+        icons();
+      }
+
+      function openProfileGate() {
+        renderProfileGate();
+        const ov = $('#profile-gate');
+        if (!ov) return;
+        ov.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+          const f = $('#pg-name');
+          if (f) f.focus({ preventScroll: true });
+        }, 160);
+      }
+
+      function closeProfileGate() {
+        const ov = $('#profile-gate');
+        if (!ov) return;
+        ov.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      function saveProfileGate() {
+        const scope = $('#profile-gate-card');
+        if (!scope) return;
+        const get = (k) => {
+          const el = scope.querySelector('[data-pmf="' + k + '"]');
+          return el ? el.value : '';
+        };
+        if (!validateProfileFields(scope, get)) { icons(); return; }
+        state.profile = {
+          name: get('name').trim(),
+          phone: normalisePhone(get('phone')),
+          email: get('email').trim()
+        };
+        persistProfile();
+        closeProfileGate();
+        toast('Details saved — continuing to payment');
+        setTimeout(() => {
+          const btn = $('#pay-btn');
+          if (btn) btn.click();          // re-run the normal pay flow
+        }, 280);
+      }
+
+      /* ---------- wiring ---------- */
+      // 1) Block "Proceed to Pay" until name + phone exist.
+      //    Capture phase runs before any handler the app may already have on #pay-btn.
+      document.addEventListener('click', (e) => {
+        const btn = e.target && e.target.closest ? e.target.closest('#pay-btn') : null;
+        if (!btn) return;
+        if (profileComplete()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        openProfileGate();
+      }, true);
+
+      // 2) Profile tab navigation (harmless if the app already handles data-nav).
+      document.addEventListener('click', (e) => {
+        const nav = e.target && e.target.closest ? e.target.closest('[data-nav="profile"]') : null;
+        if (nav) navigate('profile');
+      });
+
+      // 3) Keep typed values live-saved in the Profile tab.
+      document.addEventListener('input', (e) => {
+        const el = e.target && e.target.closest ? e.target.closest('[data-pf]') : null;
+        if (!el) return;
+        state.profile[el.dataset.pf] = el.value;
+        persistProfile();
+        const scope = el.closest('.profile-card-lg');
+        if (scope) setFieldError(scope, el.dataset.pf, '');
+      });
+
+      // 4) Buttons + backdrop + Esc.
+      document.addEventListener('click', (e) => {
+        const t = e.target;
+        if (t && t.id === 'profile-gate') { closeProfileGate(); return; }
+        const el = t && t.closest ? t.closest('[data-action]') : null;
+        if (!el) return;
+        const action = el.dataset.action;
+        if (action === 'save-profile') { e.preventDefault(); saveProfileFromPage(); }
+        else if (action === 'close-profile-gate') { e.preventDefault(); closeProfileGate(); }
+        else if (action === 'save-profile-gate') { e.preventDefault(); saveProfileGate(); }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeProfileGate();
+      });
+
+
       /* -------------------- init --------------------------------------- */
       async function init() {
+        /* Safe here: by the time init() runs, every module-level const
+           (including PROFILE_KEY) has been initialised. */
+        state.profile = loadProfile();
+
         try {
           state.db = await openDB();
         } catch (err) {
@@ -2004,6 +2378,37 @@
       /* =====================================================================
        *  Pricing
        * ===================================================================== */
+
+      const PRICING_KEY = 'smartxerox.pricing.v1';
+const DEFAULT_PRICING = {
+  bwRate: 2.00, colourRate: 8.00, minCharge: 0,
+  paper: { A4: 0, A3: 2, A5: 0, Letter: 0, Legal: 1 },   // ₹ added per sheet
+  duplex: 2, updatedAt: null
+};
+
+function loadPricing() {
+  try {
+    const raw = localStorage.getItem(PRICING_KEY);
+    if (!raw) return { ...DEFAULT_PRICING, paper: { ...DEFAULT_PRICING.paper } };
+    const p = JSON.parse(raw);
+    return {
+      bwRate: Number.isFinite(Number(p.bwRate)) ? Number(p.bwRate) : DEFAULT_PRICING.bwRate,
+      colourRate: Number.isFinite(Number(p.colourRate)) ? Number(p.colourRate) : DEFAULT_PRICING.colourRate,
+      minCharge: Number.isFinite(Number(p.minCharge)) ? Number(p.minCharge) : DEFAULT_PRICING.minCharge,
+      paper: {
+        A4: Number.isFinite(Number(p.paper?.A4)) ? Number(p.paper.A4) : DEFAULT_PRICING.paper.A4,
+        A3: Number.isFinite(Number(p.paper?.A3)) ? Number(p.paper.A3) : DEFAULT_PRICING.paper.A3,
+        A5: Number.isFinite(Number(p.paper?.A5)) ? Number(p.paper.A5) : DEFAULT_PRICING.paper.A5,
+        Letter: Number.isFinite(Number(p.paper?.Letter)) ? Number(p.paper.Letter) : DEFAULT_PRICING.paper.Letter,
+        Legal: Number.isFinite(Number(p.paper?.Legal)) ? Number(p.paper.Legal) : DEFAULT_PRICING.paper.Legal
+      },
+      duplex: Number.isFinite(Number(p.duplex)) ? Number(p.duplex) : DEFAULT_PRICING.duplex
+    };
+  } catch (_) {
+    return { ...DEFAULT_PRICING, paper: { ...DEFAULT_PRICING.paper } };
+  }
+}
+
       function selectedPages(doc) {
         const cfg = doc.cfg;
         if (cfg.pagesMode === 'All Pages') return doc.pages;
@@ -2029,9 +2434,12 @@
 
       function price(doc) {
         const cfg = doc.cfg;
-        const rate = cfg.colour === 'Colour' ? 8 : 2;
-        const paper = { A4: 1, A3: 2, A5: 0.8, Letter: 1.1, Legal: 1.35 }[cfg.paper] || 1;
-        return Math.max(0, sheets(doc) * rate * paper);
+        const P = loadPricing();
+        const rate = cfg.colour === 'Colour' ? P.colourRate : P.bwRate;
+        const surcharge = P.paper[cfg.paper] ?? 0;
+        let t = sheets(doc) * (rate + surcharge);
+        if (P.minCharge && t < P.minCharge) t = P.minCharge;
+        return Math.max(0, t);
       }
 
       const total = () => state.docs.reduce((s, d) => s + price(d), 0);
@@ -2057,6 +2465,7 @@
           case 'orders': v.innerHTML = ordersView(false); break;
           case 'history': v.innerHTML = ordersView(true); break;
           case 'detail': v.innerHTML = details(); break;
+          case 'profile': v.innerHTML = profileView(); break;
           default: v.innerHTML = home();
         }
 
@@ -2536,24 +2945,34 @@
         const o = state.orders.find((x) => x.id === state.detail);
         if (!o) return ordersView(false);
         const docs = o.docs || [];
-        const isCancelled = o.status === 'Cancelled';
-        const isCompleted = o.status === 'Completed';       
+        // Normalise so 'paid', 'PAID', 'Paid ', 'Paid\n' all match the same step.
+        const normStatus = (v) => String(v || '').trim().toLowerCase();
+        const isCancelled = normStatus(o.status) === 'cancelled';
+        const isCompleted = normStatus(o.status) === 'completed';
         const heroClass = isCancelled ? 'is-cancelled' : isCompleted ? 'is-done' : 'is-active';
 
         // Progress steps
         const steps = [
-          { label: 'Placed',   done: true },
-          { label: 'Paid',     done: o.paymentStatus === 'Paid' },
-          { label: 'Printing', done: ['Processing', 'Ready for Pickup', 'Completed'].includes(o.status) },
-          { label: 'Ready',    done: ['Ready for Pickup', 'Completed'].includes(o.status), green: isCompleted }
+          { key: 'placed',    label: 'Placed'    },
+          { key: 'paid',      label: 'Paid'      },
+          { key: 'printing',  label: 'Printing'  },
+          { key: 'ready',     label: 'Ready',     green: true },
+          { key: 'completed', label: 'Completed', green: true }
         ];
 
-        // Keep the tracker monotonic: if a later step is done, earlier ones are too.
-        // (e.g. cash order being processed before paymentStatus flips to 'Paid')
-        let lastDone = -1;
-        steps.forEach((s, i) => { if (s.done) lastDone = i; });
-        for (let i = 0; i < lastDone; i++) steps[i].done = true;
-        const activeIdx = lastDone + 1 < steps.length ? lastDone + 1 : -1;
+        // Map the order status to the step index that has been reached, then
+        // tick every step up to and including it. The next step becomes "active".
+        //   Placed → 0 · Paid → 1 · Printing → 2 · Ready → 3 · Completed → 4
+        const STATUS_ORDER = ['placed', 'paid', 'printing', 'ready', 'completed'];
+        const statusIdx = STATUS_ORDER.indexOf(normStatus(o.status));
+        let reached = statusIdx < 0 ? -1 : statusIdx;
+
+        // If the admin marked the order paid but the order status is still
+        // "Placed" (paymentStatus flipped before status), tick "Paid" anyway.
+        if (reached < 1 && normStatus(o.paymentStatus) === 'paid') reached = 1;
+
+        steps.forEach((s, i) => { s.done = i <= reached; });
+        const activeIdx = reached + 1 < steps.length ? reached + 1 : -1;
 
         const trackHtml = isCancelled
           ? `<div class="od-cancel-banner"><i data-lucide="x-circle"></i> This order was cancelled and will not be printed.</div>`
