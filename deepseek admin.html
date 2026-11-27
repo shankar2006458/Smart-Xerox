@@ -162,6 +162,29 @@
     }
     .stat-sub { font-size: 10.5px; color: var(--muted); font-weight: 600; margin-top: 4px; }
 
+    /* ---------- new-order banner ---------- */
+    .new-banner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+      background: linear-gradient(135deg, #fff8ea, #fff1d6);
+      border: 1px solid #f0d9a8; border-radius: 16px; padding: 13px 15px;
+      box-shadow: 0 6px 20px #b4770012;
+    }
+    .nb-left { display: flex; align-items: center; gap: 11px; min-width: 0; }
+    .nb-left .stat-ic { flex: none; }
+    .nb-left strong { display: block; font-size: 12.5px; font-weight: 800; color: #6b4e0a; }
+    .nb-left small { display: block; font-size: 11px; font-weight: 600; color: #8a6a1f; margin-top: 2px; }
+    .nb-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+
+    .new-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: #fff4df; color: #b47700; border: 1px solid #f1dcb0;
+      border-radius: 100px; padding: 3px 8px;
+      font-size: 9px; font-weight: 800; letter-spacing: .6px;
+    }
+    .q-row.is-new { border-color: #f0d9a8; box-shadow: 0 6px 20px #b4770014; }
+    .order-card.is-new { border-color: #f0d9a8; box-shadow: 0 6px 20px #b4770014; }
+
     /* ---------- section ---------- */
     .section { margin-bottom: 26px; }
     .section-head {
@@ -189,7 +212,7 @@
     }
     .q-body { flex: 1; min-width: 0; }
     .q-line1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .q-line1 strong { font-size: 12.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .q-line1 strong { font-size: 12.5px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
     .q-line2 { font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; display: flex; gap: 5px 10px; flex-wrap: wrap; }
     .q-actions { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
@@ -283,6 +306,27 @@
     .price-table td { color: #53637d; font-weight: 600; }
     .price-table td:last-child, .price-table th:last-child { text-align: right; font-weight: 800; color: var(--ink); }
 
+    /* ---------- view all / back button ---------- */
+    .view-all-wrap { margin-top: 12px; }
+    .back-btn { margin-bottom: 2px; }
+
+    /* ---------- scroll to top ---------- */
+    .scroll-top {
+      position: fixed; right: 16px; bottom: 82px; z-index: 40;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1px solid var(--line); background: #fff; color: var(--blue);
+      display: grid; place-items: center;
+      box-shadow: 0 8px 22px #15213a24;
+      opacity: 0; pointer-events: none; transform: translateY(14px);
+      transition: opacity .22s, transform .22s, background .18s, color .18s, border-color .18s;
+    }
+    .scroll-top.show { opacity: 1; pointer-events: auto; transform: none; }
+    .scroll-top:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    @media (min-width: 900px) {
+      .scroll-top { right: 26px; bottom: 26px; width: 46px; height: 46px; }
+    }
+
     /* ---------- bottom nav ---------- */
     .bottom {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
@@ -340,6 +384,8 @@
       display: block; font-size: 12px; font-weight: 800; color: var(--ink);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
+    .dw-cell a { color: var(--blue); text-decoration: none; font-weight: 800; }
+    .dw-cell a:hover { text-decoration: underline; }
     .dw-amount {
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
       padding: 16px 18px; border-radius: 16px; margin-bottom: 18px;
@@ -379,6 +425,15 @@
     }
     .dw-muted { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
 
+    .dw-doc-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+    .doc-loading, .doc-missing { font-size: 10.5px; font-weight: 700; color: var(--muted); }
+    .doc-missing { color: var(--red); }
+    .doc-mismatch {
+      display: inline-block; margin-left: 4px; padding: 1px 7px; border-radius: 100px;
+      background: var(--amber-soft); color: var(--amber);
+      font-size: 9.5px; font-weight: 800;
+    }
+
     .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
     .status-opt {
       border: 1.5px solid var(--line); background: #fff; border-radius: 11px;
@@ -390,6 +445,15 @@
     .status-opt.cancel { grid-column: 1 / -1; }
     .status-opt.cancel:hover { border-color: #f5c9c9; color: var(--red); background: var(--red-soft); }
     .status-opt.cancel.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: none; }
+    .status-opt.gated {
+      opacity: .62;
+      border-style: dashed;
+    }
+    .status-opt.gated:hover {
+      color: var(--amber);
+      border-color: #f1dcb0;
+      background: var(--amber-soft);
+    }
 
     .dw-delete {
       width: 100%; margin-top: 6px; padding: 11px;
@@ -419,6 +483,7 @@
       display: grid; place-items: center; margin: 0 auto 15px;
     }
     .confirm-icon.danger { background: var(--red-soft); color: var(--red); }
+    .confirm-icon.warn   { background: var(--amber-soft); color: var(--amber); }
     .confirm-icon svg { width: 25px; height: 25px; }
     .confirm-card h3 { font-size: 17px; font-weight: 800; letter-spacing: -.4px; margin-bottom: 7px; }
     .confirm-card p { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
@@ -487,6 +552,69 @@
     @media (min-width: 1180px) {
       .content { padding: 38px 46px 90px; }
     }
+
+    /* ---------- settings card heads ---------- */
+    .card-head { display: flex; align-items: flex-start; gap: 11px; }
+    .card-head h3 { margin: 0; }
+    .ch-ic {
+      width: 32px; height: 32px; border-radius: 10px; flex: none;
+      display: grid; place-items: center;
+    }
+    .ch-ic svg { width: 16px; height: 16px; }
+    .ch-blue   { background: #eef2ff; color: var(--blue); }
+    .ch-violet { background: #f1ecff; color: #7c5cff; }
+    .ch-green  { background: var(--green-soft); color: var(--green); }
+    .ch-amber  { background: var(--amber-soft); color: var(--amber); }
+    .ch-red    { background: var(--red-soft); color: var(--red); }
+
+    /* ---------- pricing editor ---------- */
+    .price-editor { display: grid; gap: 14px; }
+    .pe-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .pe-field { display: grid; gap: 5px; min-width: 0; }
+    .pe-field label {
+      font-size: 10px; font-weight: 800; letter-spacing: .8px;
+      text-transform: uppercase; color: #94a0b2;
+    }
+    .pe-input-wrap { position: relative; display: flex; align-items: center; }
+    .pe-prefix { position: absolute; left: 11px; font-size: 12px; font-weight: 800; color: #68758a; pointer-events: none; }
+    .pe-suffix { position: absolute; right: 11px; font-size: 11px; font-weight: 800; color: #94a0b2; pointer-events: none; }
+    .pe-input {
+      width: 100%; border: 1.5px solid #dce4f0; border-radius: 10px;
+      padding: 10px 12px; font-size: 13px; font-weight: 700;
+      background: #fff; color: var(--ink); font-family: inherit;
+      font-variant-numeric: tabular-nums;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .pe-input:focus { border-color: var(--blue); outline: none; box-shadow: 0 0 0 3px #325cf420; }
+    .pe-input.has-prefix { padding-left: 26px; }
+    .pe-input.has-suffix { padding-right: 30px; }
+    .pe-input::-webkit-outer-spin-button,
+    .pe-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .pe-input[type=number] { -moz-appearance: textfield; }
+    .pe-paper { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+    .pe-preview {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding: 12px 14px; border-radius: 12px;
+      background: #f5f8ff; border: 1px dashed #cfdaff;
+      font-size: 11.5px; color: #52617a; font-weight: 600;
+    }
+    .pe-preview strong {
+      font-size: 16px; color: var(--blue);
+      font-variant-numeric: tabular-nums; letter-spacing: -.3px;
+    }
+    .pe-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pe-footnote { font-size: 10.5px; color: var(--muted); font-weight: 600; }
+    .pe-footnote strong { color: var(--ink); font-weight: 800; }
+    .pe-saved {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; font-weight: 800; color: var(--green);
+      background: var(--green-soft); border-radius: 100px; padding: 4px 9px;
+      white-space: nowrap;
+    }
+    .pe-saved svg { width: 11px; height: 11px; }
+    @media (max-width: 560px) {
+      .pe-paper { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 
@@ -550,6 +678,11 @@
     <div id="confirm-card" class="confirm-card" role="dialog" aria-modal="true"></div>
   </div>
 
+  <!-- ================= scroll to top ================= -->
+  <button id="scroll-top" class="scroll-top" data-act="scroll-top" aria-label="Scroll to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+  </button>
+
   <!-- ================= toast ================= -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -557,7 +690,8 @@
     /* ============================================================
      *  Smart Xerox · Admin console
      *  - reads / writes the same IndexedDB as the customer app
-     *  - pushes status changes over the "SmartXeroxOrders" channel
+     *  - auto-detects new orders (polling + BroadcastChannel)
+     *  - resolves document Blobs from the "documents" store
      * ============================================================ */
     'use strict';
 
@@ -588,6 +722,14 @@
       return d ? d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '—';
     };
 
+    const fmtBytes = (n) => {
+      const v = Number(n);
+      if (!v || v < 0) return '—';
+      if (v < 1024) return v + ' B';
+      if (v < 1048576) return (v / 1024).toFixed(1) + ' KB';
+      return (v / 1048576).toFixed(1) + ' MB';
+    };
+
     const isSameDay = (a, b) =>
       a.getFullYear() === b.getFullYear() &&
       a.getMonth() === b.getMonth() &&
@@ -597,6 +739,13 @@
       const d = new Date();
       const p = (n) => String(n).padStart(2, '0');
       return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
+    };
+
+    const pickText = (...values) => {
+      for (const v of values) {
+        if (v !== undefined && v !== null && String(v).trim() !== '') return String(v);
+      }
+      return '—';
     };
 
     /* ------------------------------------------------------------
@@ -613,15 +762,18 @@
       checkCircle: '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/>',
       x: '<path d="M18 6 6 18M6 6l12 12"/>',
       chevron: '<path d="m9 6 6 6-6 6"/>',
+      arrowLeft: '<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>',
       trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 14h10l1-14"/>',
       download: '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 21h16"/>',
+      upload: '<path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M4 3h16"/>',
       alert: '<path d="M12 3 2 20h20L12 3z"/><path d="M12 9v5"/><circle cx="12" cy="17" r=".7"/>',
       search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
       file: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
       banknote: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/>',
       box: '<path d="m21 8-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
       eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
-      database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>'
+      database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+      bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>'
     };
 
     function icon(name, size = 18) {
@@ -648,6 +800,19 @@
      * ---------------------------------------------------------- */
     const DB_NAME = 'SmartXeroxDB';
     const CHANNEL = 'SmartXeroxOrders';
+    const SEEN_KEY = 'smartxerox.admin.seen.v1';
+    const PRICING_KEY = 'smartxerox.pricing.v1';
+
+    /* Defaults — used until the admin saves custom rates.
+       The customer app reads the exact same localStorage key. */
+    const DEFAULT_PRICING = {
+      bwRate: 2.00,
+      colourRate: 8.00,
+      minCharge: 0,
+      paper: { A4: 1.00, A3: 2.00, A5: 0.80, Letter: 1.10, Legal: 1.35 },
+      duplex: 2,
+      updatedAt: null
+    };
 
     const FLOW = ['Pending', 'Printing', 'Ready', 'Completed'];
 
@@ -665,6 +830,13 @@
       Ready: 'Mark collected'
     };
 
+    const CFG_LABEL = {
+      colour: 'Colour', color: 'Colour', paper: 'Paper', copies: 'Copies',
+      sides: 'Sides', perSheet: 'Pages per sheet', orientation: 'Orientation',
+      pagesMode: 'Pages', range: 'Range', quality: 'Quality', scale: 'Scale',
+      mode: 'Mode', duplex: 'Duplex', binding: 'Binding'
+    };
+
     const POLL_MS = 5000;
 
     /* ------------------------------------------------------------
@@ -680,7 +852,17 @@
       filter: 'all',
       search: '',
       docCount: null,
-      busy: false
+      busy: false,
+
+      /* new-order tracking */
+      seen: new Set(),
+      seenInit: false,
+      newIds: new Set(),
+
+      /* drawer document hydration */
+      drawerToken: 0,
+      drawerBlobs: {},
+      blobCache: new Map()
     };
 
     let pendingConfirm = null;
@@ -688,7 +870,28 @@
     let bc = null;
 
     /* ------------------------------------------------------------
-     * 4. IndexedDB layer
+     * 4. Seen-orders persistence (for "needs checking")
+     * ---------------------------------------------------------- */
+    function loadSeen() {
+      try {
+        const raw = localStorage.getItem(SEEN_KEY);
+        if (!raw) return null;
+        const arr = JSON.parse(raw);
+        if (!Array.isArray(arr)) return null;
+        return new Set(arr);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function saveSeen(set) {
+      try {
+        localStorage.setItem(SEEN_KEY, JSON.stringify(Array.from(set)));
+      } catch (_) { /* private mode — ignore */ }
+    }
+
+    /* ------------------------------------------------------------
+     * 5. IndexedDB layer
      * ---------------------------------------------------------- */
     let dbPromise = null;
 
@@ -755,18 +958,24 @@
     const putOrder = (order) => dbRequest('orders', 'readwrite', (s) => s.put(order));
     const deleteOrder = (id) => dbRequest('orders', 'readwrite', (s) => s.delete(id));
     const countDocuments = () => dbRequest('documents', 'readonly', (s) => s.count());
+    const getDocument = (id) => dbRequest('documents', 'readonly', (s) => s.get(id));
 
     /* ------------------------------------------------------------
-     * 5. Cross-tab broadcast (same protocol as the customer app)
+     * 6. Cross-tab broadcast (same protocol as the customer app)
      * ---------------------------------------------------------- */
     function connectChannel() {
       try {
         bc = new BroadcastChannel(CHANNEL);
         bc.onmessage = (event) => {
           const data = event.data;
-          if (!data || data.type !== 'order-status') return;
-          /* Another admin tab changed something — refresh quietly. */
-          loadAll({ notify: false });
+          if (!data) return;
+          if (data.type === 'order-status') {
+            /* Another tab changed something — refresh and notify. */
+            loadAll({ notify: true });
+          } else if (data.type === 'pricing-updated') {
+            /* Another tab saved new rates — refresh the Settings view. */
+            if (state.view === 'settings') render();
+          }
         };
       } catch (_) {
         bc = null; /* BroadcastChannel unsupported — polling still works */
@@ -786,19 +995,189 @@
     }
 
     /* ------------------------------------------------------------
-     * 6. Order helpers
+     * 7. Order normalisation helpers
      * ---------------------------------------------------------- */
+    function normStatus(s) {
+      if (!s) return 'Pending';
+      const v = String(s).trim().toLowerCase();
+      for (const k of FLOW.concat(['Cancelled'])) {
+        if (k.toLowerCase() === v) return k;
+      }
+      return String(s);
+    }
+
+    function normPay(s) {
+      const v = String(s || '').trim().toLowerCase();
+      if (v === 'paid' || v === 'success' || v === 'succeeded') return 'Paid';
+      if (!v || v === 'pending' || v === 'unpaid' || v === 'due' || v === 'not paid') return 'Pending';
+      return String(s);
+    }
+
+    const statusOf = (order) => normStatus(order && order.status);
+
+    /* The customer app saves { name, phone, email } here whenever the
+       shopper completes / edits their profile. Admin runs on the same
+       browser, so we can read it as a fallback when an order itself
+       does not carry the customer snapshot. */
+    const PROFILE_KEY = 'smartxerox.profile';
+
+    function loadCustomerProfile() {
+      try {
+        const raw = localStorage.getItem(PROFILE_KEY);
+        if (!raw) return null;
+        const p = JSON.parse(raw);
+        if (!p || typeof p !== 'object') return null;
+        const name  = String(p.name  || '').trim();
+        const phone = String(p.phone || '').replace(/\D/g, '').slice(-10);
+        const email = String(p.email || '').trim();
+        if (!name && !phone && !email) return null;
+        return { name, phone, email };
+      } catch (_) {
+        return null;
+      }
+    }
+
+        /* ------------------------------------------------------------
+     * Pricing (shared with the customer app via localStorage)
+     * ---------------------------------------------------------- */
+    function loadPricing() {
+      try {
+        const raw = localStorage.getItem(PRICING_KEY);
+        if (!raw) return { ...DEFAULT_PRICING, paper: { ...DEFAULT_PRICING.paper } };
+        const p = JSON.parse(raw);
+        if (!p || typeof p !== 'object') return { ...DEFAULT_PRICING, paper: { ...DEFAULT_PRICING.paper } };
+        return {
+          bwRate: Number.isFinite(Number(p.bwRate)) ? Number(p.bwRate) : DEFAULT_PRICING.bwRate,
+          colourRate: Number.isFinite(Number(p.colourRate)) ? Number(p.colourRate) : DEFAULT_PRICING.colourRate,
+          minCharge: Number.isFinite(Number(p.minCharge)) ? Number(p.minCharge) : DEFAULT_PRICING.minCharge,
+          paper: {
+            A4: Number.isFinite(Number(p.paper && p.paper.A4)) ? Number(p.paper.A4) : DEFAULT_PRICING.paper.A4,
+            A3: Number.isFinite(Number(p.paper && p.paper.A3)) ? Number(p.paper.A3) : DEFAULT_PRICING.paper.A3,
+            A5: Number.isFinite(Number(p.paper && p.paper.A5)) ? Number(p.paper.A5) : DEFAULT_PRICING.paper.A5,
+            Letter: Number.isFinite(Number(p.paper && p.paper.Letter)) ? Number(p.paper.Letter) : DEFAULT_PRICING.paper.Letter,
+            Legal: Number.isFinite(Number(p.paper && p.paper.Legal)) ? Number(p.paper.Legal) : DEFAULT_PRICING.paper.Legal
+          },
+          duplex: Number.isFinite(Number(p.duplex)) ? Number(p.duplex) : DEFAULT_PRICING.duplex,
+          updatedAt: p.updatedAt || null
+        };
+      } catch (_) {
+        return { ...DEFAULT_PRICING, paper: { ...DEFAULT_PRICING.paper } };
+      }
+    }
+
+    function savePricing(pricing) {
+      const payload = {
+        bwRate: Number(pricing.bwRate) || 0,
+        colourRate: Number(pricing.colourRate) || 0,
+        minCharge: Number(pricing.minCharge) || 0,
+        paper: {
+          A4: Number(pricing.paper.A4) || 0,
+          A3: Number(pricing.paper.A3) || 0,
+          A5: Number(pricing.paper.A5) || 0,
+          Letter: Number(pricing.paper.Letter) || 0,
+          Legal: Number(pricing.paper.Legal) || 0
+        },
+        duplex: Number(pricing.duplex) || 2,
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem(PRICING_KEY, JSON.stringify(payload));
+      if (bc) {
+        try { bc.postMessage({ type: 'pricing-updated', pricing: payload }); } catch (_) {}
+      }
+      return payload;
+    }
+
+    function customerOf(order) {
+      const c = (order && (order.customer || order.customerDetails || order.user)) || {};
+      const profile = loadCustomerProfile() || {};
+
+      /* Prefer whatever the order itself carries (historically accurate),
+         then fall back to the profile that lives on this device. */
+      const name = pickText(
+        c.name, c.fullName, c.customerName,
+        order && order.customerName, order && order.name, order && order.userName,
+        profile.name
+      );
+      const phone = pickText(
+        c.phone, c.mobile, c.contact, c.phoneNumber,
+        order && order.phone, order && order.mobile,
+        order && order.contact, order && order.customerPhone,
+        profile.phone
+      );
+      const email = pickText(
+        c.email, c.mail,
+        order && order.email, order && order.customerEmail,
+        profile.email
+      );
+
+      return { name, phone, email };
+    }
+
+    function paymentMethodOf(order) {
+      return pickText(
+        order && order.paymentMethod,
+        order && order.payment && order.payment.method,
+        order && order.paymentMode,
+        order && order.method,
+        'Payment'
+      );
+    }
+
+    function paymentStatusOf(order) {
+      return normPay(
+        (order && order.paymentStatus) ||
+        (order && order.payment && order.payment.status) ||
+        ''
+      );
+    }
+
+    /* UPI / card / any transaction reference. The customer app may store
+       it directly on the order or inside order.payment depending on the
+       payment method and app version. */
+    function transactionIdOf(order) {
+      if (!order || typeof order !== 'object') return '';
+      const p = order.payment && typeof order.payment === 'object' ? order.payment : {};
+      const candidates = [
+        order.transactionId, order.txnId, order.upiTransactionId,
+        order.transactionRef, order.txnRef, order.upiRef,
+        order.referenceId, order.reference, order.utr,
+        p.transactionId, p.txnId, p.upiTransactionId,
+        p.transactionRef, p.txnRef, p.upiRef,
+        p.referenceId, p.reference, p.utr
+      ];
+      for (const v of candidates) {
+        if (v !== undefined && v !== null && String(v).trim() !== '') {
+          return String(v).trim();
+        }
+      }
+      return '';
+    }
+
+    function amountOf(order) {
+      if (!order || typeof order !== 'object') return 0;
+      const raw =
+        order.amount ??
+        order.total ??
+        order.totalAmount ??
+        order.price ??
+        (order.payment && order.payment.amount);
+      const n = Number(raw);
+      return Number.isFinite(n) ? n : 0;
+    }
+
     function orderDocs(order) {
-      if (Array.isArray(order.docs)) return order.docs;
-      if (Array.isArray(order.items)) return order.items;
-      if (Array.isArray(order.documents)) return order.documents;
+      if (!order) return [];
+      const raw = order.docs ?? order.documents ?? order.files ?? order.items;
+      if (Array.isArray(raw)) return raw;
+      if (Array.isArray(order.docIds)) return order.docIds.map((id) => ({ docId: id }));
       return [];
     }
 
     function orderPages(order) {
       const docs = orderDocs(order);
       const sum = docs.reduce((n, d) => n + (Number(d && d.pages) || 0), 0);
-      return sum || Number(order.pages) || 0;
+      if (sum) return sum;
+      return Number((order && (order.pages ?? order.totalPages)) || 0);
     }
 
     const queueLabel = (order) =>
@@ -807,23 +1186,31 @@
         : '—';
 
     const isFinished = (order) =>
-      order && (order.status === 'Completed' || order.status === 'Cancelled');
+      order && (statusOf(order) === 'Completed' || statusOf(order) === 'Cancelled');
 
     function statusBadge(status) {
-      const meta = STATUS_META[status] || { cls: 'pending', label: status || 'Unknown' };
+      const key = normStatus(status);
+      const meta = STATUS_META[key] || { cls: 'pending', label: status || 'Unknown' };
       return `<span class="sbadge ${meta.cls}"><span class="dot"></span>${esc(meta.label)}</span>`;
     }
 
     function nextStatus(status) {
-      const i = FLOW.indexOf(status);
+      const i = FLOW.indexOf(normStatus(status));
       return i >= 0 && i < FLOW.length - 1 ? FLOW[i + 1] : null;
     }
 
+    function payDisplay(order) {
+      const method = paymentMethodOf(order);
+      const ps = paymentStatusOf(order);
+      const word = ps === 'Paid' ? 'Paid' : ps === 'Pending' ? 'Unpaid' : ps;
+      return `${method} · ${word}`;
+    }
+
     function paidLabel(order) {
-      const method = order.paymentMethod || 'Payment';
-      if (order.paymentStatus === 'Paid') return `${method} · paid`;
-      if (order.paymentStatus === 'Pending') return `${method} · unpaid`;
-      return order.paymentStatus ? `${method} · ${order.paymentStatus}` : method;
+      const method = paymentMethodOf(order);
+      const ps = paymentStatusOf(order);
+      const word = ps === 'Paid' ? 'paid' : ps === 'Pending' ? 'unpaid' : ps.toLowerCase();
+      return `${method} · ${word}`;
     }
 
     function findOrder(id) {
@@ -831,7 +1218,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 7. Loading
+     * 8. Loading + new-order detection
      * ---------------------------------------------------------- */
     async function loadAll({ notify = false } = {}) {
       let orders;
@@ -851,22 +1238,48 @@
         return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
       });
 
-      if (notify && state.loaded) {
-        const known = new Set(state.orders.map((o) => o.id));
-        const fresh = orders.filter((o) => !known.has(o.id));
-        if (fresh.length) {
-          const names = fresh.slice(0, 3).map(queueLabel).join(', ');
-          toast(`New order${fresh.length > 1 ? 's' : ''} received — ${names}`);
+      /* --- new-order detection --- */
+      /* A finished order (Completed / Cancelled) is never "new" — the
+         admin has already acted on it, whether they opened the drawer
+         or just advanced it from the dashboard queue. */
+      const fresh = orders.filter((o) => !state.seen.has(o.id) && !isFinished(o));
+
+      if (!state.seenInit) {
+        /* First ever load: treat everything as already seen, so the
+           admin is not flooded with old orders. */
+        orders.forEach((o) => state.seen.add(o.id));
+        state.seenInit = true;
+        saveSeen(state.seen);
+        state.newIds.clear();
+      } else if (fresh.length) {
+        /* Only toast for orders we haven't already announced. Without
+           this, every 5 s poll re-toasts the same unopened order. */
+        const brandNew = fresh.filter((o) => !state.newIds.has(o.id));
+        fresh.forEach((o) => state.newIds.add(o.id));
+        if (notify && brandNew.length) {
+          const names = brandNew
+            .slice(0, 3)
+            .map((o) => customerOf(o).name)
+            .filter((n) => n !== '—');
+          const label = brandNew.length === 1 ? 'New order' : brandNew.length + ' new orders';
+          toast(label + ' received' + (names.length ? ' — ' + names.join(', ') : ''));
+        }
+      }
+
+      /* prune newIds that no longer exist, or that are already finished */
+      const liveIds = new Set(orders.map((o) => o.id));
+      for (const id of Array.from(state.newIds)) {
+        const order = orders.find((o) => o.id === id);
+        if (!liveIds.has(id) || !order || isFinished(order)) {
+          state.newIds.delete(id);
         }
       }
 
       const sig = orders
-        .map((o) => [o.id, o.status, o.paymentStatus, o.amount].join(':'))
+        .map((o) => [o.id, o.status, o.paymentStatus, amountOf(o), o.created].join(':'))
         .join('|');
 
-      if (state.loaded && sig === state.sig) {
-        return; /* nothing changed — do not re-render */
-      }
+      if (state.loaded && sig === state.sig) return;
 
       state.orders = orders;
       state.sig = sig;
@@ -883,7 +1296,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 8. Toast
+     * 9. Toast
      * ---------------------------------------------------------- */
     let toastTimer = null;
     function toast(message) {
@@ -896,7 +1309,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 9. Render
+     * 10. Render
      * ---------------------------------------------------------- */
     function render() {
       /* Keep focus/caret if the orders search box is being typed in. */
@@ -904,9 +1317,10 @@
       const restoreSearch = active && active.id === 'order-search';
       const caret = restoreSearch ? active.selectionStart : null;
 
-      /* Navigation highlighting */
+      /* Navigation highlighting (the "All orders" page keeps Orders lit) */
+      const navKey = state.view === 'all-orders' ? 'orders' : state.view;
       $$('[data-nav]').forEach((btn) => {
-        btn.classList.toggle('active', btn.dataset.nav === state.view);
+        btn.classList.toggle('active', btn.dataset.nav === navKey);
       });
 
       /* Sync pill */
@@ -917,15 +1331,22 @@
         if (txt) txt.textContent = state.dbError ? 'Storage error' : 'Live sync';
       });
 
+      /* Unread counter in the browser tab */
+      document.title = state.newIds.size
+        ? '(' + state.newIds.size + ') Smart Xerox · Admin'
+        : 'Smart Xerox · Admin';
+
       const view = $('#view');
       switch (state.view) {
-        case 'orders':   view.innerHTML = ordersView(); break;
-        case 'settings': view.innerHTML = settingsView(); break;
-        default:         view.innerHTML = dashboardView();
+        case 'orders':     view.innerHTML = ordersView(); break;
+        case 'all-orders': view.innerHTML = ordersView('all'); break;
+        case 'settings':   view.innerHTML = settingsView(); break;
+        default:           view.innerHTML = dashboardView();
       }
 
       renderDrawer();
       hydrateIcons(view);
+      if (state.view === 'settings') bindPricingEditor();
 
       if (restoreSearch) {
         const input = $('#order-search');
@@ -937,7 +1358,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 10. Views
+     * 11. Views
      * ---------------------------------------------------------- */
     function errorBanner() {
       if (!state.dbError) return '';
@@ -948,6 +1369,30 @@
             <strong>Local storage could not be read</strong>
             Open the Smart Xerox customer app once in this browser so the local
             database is created, then tap Refresh. Private windows may block storage.
+          </div>
+        </div>`;
+    }
+
+    function newOrdersBanner() {
+      if (!state.newIds.size) return '';
+      const list = state.orders.filter((o) => state.newIds.has(o.id)).slice(0, 3);
+      const names = list.map((o) => customerOf(o).name).filter((n) => n !== '—');
+      const latest = list[0];
+      return `
+        <div class="new-banner">
+          <div class="nb-left">
+            <span class="stat-ic amber">${icon('bell', 15)}</span>
+            <div>
+              <strong>${state.newIds.size} new order${state.newIds.size === 1 ? '' : 's'} need checking</strong>
+              <small>
+                ${names.length ? esc(names.join(', ')) : 'Open the orders list'}
+                ${latest ? ' · latest at ' + esc(fmtTime(latest.created)) : ''}
+              </small>
+            </div>
+          </div>
+          <div class="nb-actions">
+            <button class="mini solid" data-act="goto-new">Review new</button>
+            <button class="mini" data-act="mark-all-seen">Mark all reviewed</button>
           </div>
         </div>`;
     }
@@ -968,15 +1413,24 @@
           return (da ? da.getTime() : 0) - (db ? db.getTime() : 0);
         });
 
-      const printing = active.filter((o) => o.status === 'Printing').length;
-      const pending = active.filter((o) => o.status === 'Pending').length;
+      const printing = active.filter((o) => statusOf(o) === 'Printing').length;
+      const pending = active.filter((o) => statusOf(o) === 'Pending').length;
 
-      const revenueToday = todays
-        .filter((o) => o.status !== 'Cancelled')
-        .reduce((sum, o) => sum + (Number(o.amount) || 0), 0);
+      /* "Ordered" = value of every non-cancelled order placed today.
+         "Collected" = only the ones actually marked Paid. These are
+         different numbers and showing only one of them is misleading. */
+      const orderedToday = todays
+        .filter((o) => statusOf(o) !== 'Cancelled')
+        .reduce((sum, o) => sum + amountOf(o), 0);
 
-      const completedToday = todays.filter((o) => o.status === 'Completed').length;
-      const unpaidActive = active.filter((o) => o.paymentStatus !== 'Paid').length;
+      const collectedToday = todays
+        .filter((o) => statusOf(o) !== 'Cancelled' && paymentStatusOf(o) === 'Paid')
+        .reduce((sum, o) => sum + amountOf(o), 0);
+
+      const unpaidToday = orderedToday - collectedToday;
+
+      const completedToday = todays.filter((o) => statusOf(o) === 'Completed').length;
+      const unpaidActive = active.filter((o) => paymentStatusOf(o) !== 'Paid').length;
 
       const queueRows = active.length
         ? active.map(queueRow).join('')
@@ -986,7 +1440,9 @@
              <p>You're all caught up. New orders will appear here automatically.</p>
            </div>`;
 
-      const recent = state.orders.slice(0, 5);
+      const recentLimit = 4;
+      const recent = state.orders.slice(0, recentLimit);
+      const hasMoreOrders = state.orders.length > recentLimit;
       const recentRows = recent.length
         ? recent.map(orderCard).join('')
         : `<div class="empty">
@@ -997,6 +1453,7 @@
 
       return `
         ${errorBanner()}
+        ${newOrdersBanner()}
 
         <div class="page-head">
           <div>
@@ -1033,10 +1490,10 @@
           <div class="stat">
             <div class="stat-top">
               <span class="stat-ic green">${icon('banknote', 15)}</span>
-              <span class="stat-label">Revenue today</span>
+              <span class="stat-label">Collected today</span>
             </div>
-            <div class="stat-value">${money(revenueToday)}</div>
-            <div class="stat-sub">${unpaidActive} active unpaid</div>
+            <div class="stat-value">${money(collectedToday)}</div>
+            <div class="stat-sub">of ${money(orderedToday)} ordered${unpaidToday > 0 ? ' · ' + money(unpaidToday) + ' outstanding' : ''}</div>
           </div>
 
           <div class="stat">
@@ -1045,7 +1502,7 @@
               <span class="stat-label">Completed today</span>
             </div>
             <div class="stat-value">${completedToday}</div>
-            <div class="stat-sub">${todays.filter((o) => o.status === 'Cancelled').length} cancelled</div>
+            <div class="stat-sub">${todays.filter((o) => statusOf(o) === 'Cancelled').length} cancelled</div>
           </div>
         </div>
 
@@ -1060,32 +1517,51 @@
         <section class="section">
           <div class="section-head">
             <h2>Recent orders</h2>
-            <small>Latest activity</small>
+            <small>${hasMoreOrders
+              ? `Showing ${recent.length} of ${state.orders.length}`
+              : 'Latest activity'}</small>
           </div>
           <div class="queue-list">${recentRows}</div>
+          ${hasMoreOrders ? `
+            <div class="view-all-wrap">
+              <button class="btn ghost full" data-act="view-all-orders">
+                ${icon('list', 15)} View all ${state.orders.length} orders
+              </button>
+            </div>` : ''}
         </section>
       `;
     }
 
     function queueRow(order) {
-      const docs = orderDocs(order).length;
+      const docs = orderDocs(order);
+      const pages = orderPages(order);
+      const c = customerOf(order);
+      const isNew = state.newIds.has(order.id);
       const next = nextStatus(order.status);
       return `
-        <div class="q-row">
+        <div class="q-row ${isNew ? 'is-new' : ''}">
           <div class="q-num">${esc(queueLabel(order))}</div>
           <div class="q-body">
             <div class="q-line1">
-              <strong>${docs} document${docs === 1 ? '' : 's'} · ${orderPages(order)} page${orderPages(order) === 1 ? '' : 's'}</strong>
+              <strong>${esc(c.name)}</strong>
+              ${isNew ? '<span class="new-badge">NEW</span>' : ''}
               ${statusBadge(order.status)}
             </div>
             <div class="q-line2">
-              <span>${money(order.amount)}</span>
+              <span>${docs.length} doc${docs.length === 1 ? '' : 's'} · ${pages} page${pages === 1 ? '' : 's'}</span>
+              <span>${money(amountOf(order))}</span>
               <span>${esc(paidLabel(order))}</span>
               <span>${esc(fmtTime(order.created))}</span>
             </div>
           </div>
           <div class="q-actions">
-            ${next ? `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[order.status] || 'Advance')}</button>` : ''}
+            ${next
+              ? (PAYMENT_GATE.has(next) && paymentStatusOf(order) !== 'Paid'
+                  ? `<button class="mini" data-act="advance" data-id="${esc(order.id)}" title="Payment not collected yet">
+                       ${icon('banknote', 13)} ${esc(ADVANCE_LABEL[statusOf(order)] || 'Advance')}
+                     </button>`
+                  : `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[statusOf(order)] || 'Advance')}</button>`)
+              : ''}
             <button class="mini" data-act="detail" data-id="${esc(order.id)}">
               ${icon('eye', 13)} View
             </button>
@@ -1094,7 +1570,28 @@
     }
 
     /* ---------------- Orders ---------------- */
-    function ordersView() {
+    function visibleOrders() {
+      const query = state.search.trim().toLowerCase();
+      return state.orders.filter((o) => {
+        if (state.filter === 'new') {
+          if (!state.newIds.has(o.id)) return false;
+        } else if (state.filter !== 'all' && statusOf(o) !== state.filter) {
+          return false;
+        }
+        if (!query) return true;
+        const c = customerOf(o);
+        const haystack = [
+          o.queue, o.id, paymentMethodOf(o), paymentStatusOf(o),
+          c.name, c.phone, c.email,
+          ...orderDocs(o).map((d) => (d && (d.name || d.fileName)) || '')
+        ].join(' ').toLowerCase();
+        return haystack.includes(query);
+      });
+    }
+
+    function ordersView(mode = 'orders') {
+      const isAll = mode === 'all';
+
       const counts = {
         all: state.orders.length,
         Pending: 0,
@@ -1104,22 +1601,15 @@
         Cancelled: 0
       };
       state.orders.forEach((o) => {
-        if (counts[o.status] !== undefined) counts[o.status] += 1;
+        const s = statusOf(o);
+        if (counts[s] !== undefined) counts[s] += 1;
       });
 
-      const query = state.search.trim().toLowerCase();
-      const filtered = state.orders.filter((o) => {
-        if (state.filter !== 'all' && o.status !== state.filter) return false;
-        if (!query) return true;
-        const haystack = [
-          o.queue, o.id, o.paymentMethod, o.paymentStatus,
-          ...orderDocs(o).map((d) => (d && d.name) || '')
-        ].join(' ').toLowerCase();
-        return haystack.includes(query);
-      });
+      const filtered = visibleOrders();
 
       const chips = [
         ['all', 'All', counts.all],
+        ['new', 'New', state.newIds.size],
         ['Pending', 'Pending', counts.Pending],
         ['Printing', 'Printing', counts.Printing],
         ['Ready', 'Ready', counts.Ready],
@@ -1140,12 +1630,16 @@
 
         <div class="page-head">
           <div>
-            <div class="eyebrow">SMART XEROX · ADMIN</div>
-            <h1>Orders</h1>
-            <p>Search, filter and update every print order placed in the shop.</p>
+            ${isAll ? `<button class="mini back-btn" data-act="back-to-dashboard">${icon('arrowLeft', 13)} Back to dashboard</button>` : ''}
+            <div class="eyebrow" ${isAll ? 'style="margin-top:12px"' : ''}>SMART XEROX · ADMIN</div>
+            <h1>${isAll ? 'All orders' : 'Orders'}</h1>
+            <p>${isAll
+              ? `Every order stored on this device — ${state.orders.length} total. Search, filter and update any of them.`
+              : 'Search, filter and update every print order placed in the shop.'}</p>
           </div>
           <div class="page-actions">
             <button class="btn ghost" data-act="refresh">${icon('refresh', 15)} Refresh</button>
+            <button class="btn ghost" data-act="import">${icon('upload', 15)} Import CSV</button>
             <button class="btn" data-act="export">${icon('download', 15)} Export CSV</button>
           </div>
         </div>
@@ -1154,7 +1648,7 @@
           <div class="search-wrap">
             ${icon('search', 15)}
             <input id="order-search" class="search-input" type="search"
-                   placeholder="Search queue number, order ID or file name…"
+                   placeholder="Search queue number, customer, phone or file name…"
                    value="${esc(state.search)}" autocomplete="off">
           </div>
         </div>
@@ -1172,26 +1666,39 @@
     }
 
     function orderCard(order) {
-      const docs = orderDocs(order).length;
+      const docs = orderDocs(order);
+      const pages = orderPages(order);
+      const c = customerOf(order);
       const next = nextStatus(order.status);
+      const isNew = state.newIds.has(order.id);
       return `
-        <article class="order-card">
+        <article class="order-card ${isNew ? 'is-new' : ''}">
           <div class="oc-main">
             <div class="oc-q">
               <span class="oc-q-label">QUEUE</span>
               <strong>${esc(queueLabel(order))}</strong>
             </div>
             <div class="oc-info">
-              <div class="oc-title">${docs} document${docs === 1 ? '' : 's'} · ${orderPages(order)} page${orderPages(order) === 1 ? '' : 's'}</div>
-              <div class="oc-sub">${esc(fmt(order.created))} · ${esc(paidLabel(order))}</div>
+              <div class="oc-title">${esc(c.name)}</div>
+              <div class="oc-sub">
+                ${docs.length} doc${docs.length === 1 ? '' : 's'} · ${pages} page${pages === 1 ? '' : 's'}
+                · ${esc(fmt(order.created))} · ${esc(payDisplay(order))}
+              </div>
             </div>
             <div class="oc-right">
+              ${isNew ? '<span class="new-badge">NEW</span>' : ''}
               ${statusBadge(order.status)}
-              <strong class="oc-amt">${money(order.amount)}</strong>
+              <strong class="oc-amt">${money(amountOf(order))}</strong>
             </div>
           </div>
           <div class="oc-actions">
-            ${next ? `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[order.status] || 'Advance')}</button>` : ''}
+            ${next
+              ? (PAYMENT_GATE.has(next) && paymentStatusOf(order) !== 'Paid'
+                  ? `<button class="mini" data-act="advance" data-id="${esc(order.id)}" title="Payment not collected yet">
+                       ${icon('banknote', 13)} ${esc(ADVANCE_LABEL[statusOf(order)] || 'Advance')}
+                     </button>`
+                  : `<button class="mini solid" data-act="advance" data-id="${esc(order.id)}">${esc(ADVANCE_LABEL[statusOf(order)] || 'Advance')}</button>`)
+              : ''}
             <button class="mini" data-act="detail" data-id="${esc(order.id)}">${icon('eye', 13)} Details</button>
             ${!isFinished(order)
               ? `<button class="mini danger" data-act="ask-cancel" data-id="${esc(order.id)}">${icon('x', 13)} Cancel</button>`
@@ -1202,6 +1709,10 @@
 
     /* ---------------- Settings ---------------- */
     function settingsView() {
+      const pricing = loadPricing();
+      const updated = pricing.updatedAt ? fmt(pricing.updatedAt) : 'Using defaults';
+      const paperSizes = ['A4', 'A3', 'A5', 'Letter', 'Legal'];
+
       return `
         ${errorBanner()}
 
@@ -1209,54 +1720,143 @@
           <div>
             <div class="eyebrow">SMART XEROX · ADMIN</div>
             <h1>Settings</h1>
-            <p>Storage health, data exports and the pricing rules applied by the customer app.</p>
+            <p>Control pricing, review storage health and back up your shop data — all from here.</p>
           </div>
         </div>
 
         <div class="card">
-          <h3>Storage &amp; connection</h3>
-          <p class="hint">The admin console reads and writes the same local database as the customer app.</p>
-          <div class="kv"><span>Database</span><strong>${state.dbError ? 'Unavailable' : 'Connected'}</strong></div>
-          <div class="kv"><span>Orders stored</span><strong>${state.orders.length}</strong></div>
-          <div class="kv"><span>Documents stored</span><strong>${state.docCount === null ? '—' : state.docCount}</strong></div>
-          <div class="kv"><span>Live updates</span><strong>${bc ? 'BroadcastChannel active' : 'Polling every 5s'}</strong></div>
+          <div class="card-head">
+            <span class="ch-ic ch-blue">${icon('sliders', 15)}</span>
+            <div style="flex:1;min-width:0">
+              <h3>Pricing rules</h3>
+              <p class="hint" style="margin:2px 0 0">Saved on this device and applied by the customer app. Orders already placed keep the price they were created with.</p>
+            </div>
+            <span class="pe-saved" id="pe-saved-note" style="display:none">${icon('check', 12)} Saved</span>
+          </div>
+
+          <form id="pricing-form" class="price-editor" autocomplete="off" style="margin-top:14px">
+            <div class="pe-grid">
+              <div class="pe-field">
+                <label for="pe-bw">Black &amp; white · per sheet</label>
+                <div class="pe-input-wrap">
+                  <span class="pe-prefix">₹</span>
+                  <input id="pe-bw" class="pe-input has-prefix" name="bwRate" type="number" min="0" step="0.01" value="${Number(pricing.bwRate).toFixed(2)}">
+                </div>
+              </div>
+              <div class="pe-field">
+                <label for="pe-colour">Colour · per sheet</label>
+                <div class="pe-input-wrap">
+                  <span class="pe-prefix">₹</span>
+                  <input id="pe-colour" class="pe-input has-prefix" name="colourRate" type="number" min="0" step="0.01" value="${Number(pricing.colourRate).toFixed(2)}">
+                </div>
+              </div>
+              <div class="pe-field">
+                <label for="pe-min">Minimum order charge</label>
+                <div class="pe-input-wrap">
+                  <span class="pe-prefix">₹</span>
+                  <input id="pe-min" class="pe-input has-prefix" name="minCharge" type="number" min="0" step="0.01" value="${Number(pricing.minCharge).toFixed(2)}">
+                </div>
+              </div>
+              <div class="pe-field">
+                <label>Duplex</label>
+                <div class="pe-preview" style="padding:10px 12px;border-style:solid">
+                  <span style="font-size:10.5px">Fixed · 2 pages per sheet when double-sided</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pe-field">
+              <label>Paper surcharge · added per sheet (₹)</label>
+              <div class="pe-paper">
+                ${paperSizes.map((size) => `
+                  <div class="pe-field">
+                    <label for="pe-paper-${size}" style="letter-spacing:.4px">${size}</label>
+                    <div class="pe-input-wrap">
+                      <input id="pe-paper-${size}" class="pe-input has-suffix" name="paper-${size}" type="number" min="0" step="0.01" value="${Number(pricing.paper[size]).toFixed(2)}">
+                      <span class="pe-suffix">×</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="pe-preview" style="flex-direction:column;align-items:stretch;gap:9px">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                <span>10-page colour A4 · single-sided <small style="color:#94a0b2;font-weight:700">(10 sheets)</small></span>
+                <strong id="pe-preview-single">₹0.00</strong>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:8px;border-top:1px dashed #cfdaff">
+                <span>10-page colour A4 · double-sided <small style="color:#94a0b2;font-weight:700">(5 sheets)</small></span>
+                <strong id="pe-preview-double">₹0.00</strong>
+              </div>
+            </div>
+
+            <div class="pe-actions">
+              <button type="submit" class="btn">${icon('check', 15)} Save pricing</button>
+              <button type="button" class="btn ghost" data-act="reset-pricing">${icon('refresh', 15)} Reset to defaults</button>
+            </div>
+
+            <div class="pe-footnote">Last saved: <strong id="pe-updated-at">${esc(updated)}</strong></div>
+          </form>
         </div>
 
         <div class="card">
-          <h3>Export</h3>
-          <p class="hint">Download every order as a spreadsheet-friendly CSV file.</p>
-          <div class="row-actions">
+          <div class="card-head">
+            <span class="ch-ic ch-violet">${icon('printer', 15)}</span>
+            <div style="flex:1;min-width:0">
+              <h3>Customer profile on this device</h3>
+              <p class="hint" style="margin:2px 0 0">Set by the shopper in the Profile tab. Used to fill customer details on any order that did not store them.</p>
+            </div>
+          </div>
+          ${(() => {
+            const p = loadCustomerProfile();
+            if (!p) return `<div class="kv" style="margin-top:10px"><span>Status</span><strong>No profile saved yet</strong></div>`;
+            return `
+              <div class="kv" style="margin-top:10px"><span>Name</span><strong>${esc(p.name || '—')}</strong></div>
+              <div class="kv"><span>Phone</span><strong>${esc(p.phone || '—')}</strong></div>
+              <div class="kv"><span>Email</span><strong>${esc(p.email || '—')}</strong></div>`;
+          })()}
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="ch-ic ch-green">${icon('database', 15)}</span>
+            <div style="flex:1;min-width:0">
+              <h3>Storage &amp; connection</h3>
+              <p class="hint" style="margin:2px 0 0">The admin console reads and writes the same local database as the customer app.</p>
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <div class="kv"><span>Database</span><strong>${state.dbError ? 'Unavailable' : 'Connected'}</strong></div>
+            <div class="kv"><span>Orders stored</span><strong>${state.orders.length}</strong></div>
+            <div class="kv"><span>Documents stored</span><strong>${state.docCount === null ? '—' : state.docCount}</strong></div>
+            <div class="kv"><span>Live updates</span><strong>${bc ? 'BroadcastChannel active' : 'Polling every 5s'}</strong></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <span class="ch-ic ch-amber">${icon('upload', 15)}</span>
+            <div style="flex:1;min-width:0">
+              <h3>Backup &amp; restore</h3>
+              <p class="hint" style="margin:2px 0 0">Export every order to CSV, or restore from a previous Smart Xerox export. Duplicate IDs are skipped automatically.</p>
+            </div>
+          </div>
+          <div class="row-actions" style="margin-top:12px">
+            <button class="btn ghost" data-act="import">${icon('upload', 15)} Import orders (CSV)</button>
             <button class="btn ghost" data-act="export">${icon('download', 15)} Export orders (CSV)</button>
           </div>
         </div>
 
         <div class="card">
-          <h3>Pricing reference</h3>
-          <p class="hint">
-            These rules are applied by the customer app when a price is calculated.
-            Changing them here would require an update to the customer app.
-          </p>
-          <table class="price-table">
-            <thead>
-              <tr><th>Item</th><th>Rate</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Black &amp; white print</td><td>₹2.00 / sheet</td></tr>
-              <tr><td>Colour print</td><td>₹8.00 / sheet</td></tr>
-              <tr><td>A4 paper</td><td>× 1.00</td></tr>
-              <tr><td>A3 paper</td><td>× 2.00</td></tr>
-              <tr><td>A5 paper</td><td>× 0.80</td></tr>
-              <tr><td>Letter paper</td><td>× 1.10</td></tr>
-              <tr><td>Legal paper</td><td>× 1.35</td></tr>
-              <tr><td>Double-sided</td><td>2 pages / sheet</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="card">
-          <h3>Maintenance</h3>
-          <p class="hint">Housekeeping tasks for the local order database.</p>
-          <div class="row-actions">
+          <div class="card-head">
+            <span class="ch-ic ch-red">${icon('trash', 15)}</span>
+            <div style="flex:1;min-width:0">
+              <h3>Maintenance</h3>
+              <p class="hint" style="margin:2px 0 0">Housekeeping tasks for the local order database.</p>
+            </div>
+          </div>
+          <div class="row-actions" style="margin-top:12px">
             <button class="btn ghost" data-act="clear-finished">${icon('trash', 15)} Clear completed &amp; cancelled</button>
             <button class="btn danger" data-act="reset-all">${icon('alert', 15)} Reset all data</button>
           </div>
@@ -1265,7 +1865,169 @@
     }
 
     /* ------------------------------------------------------------
-     * 11. Order drawer
+     * Pricing editor bindings
+     * ---------------------------------------------------------- */
+    function bindPricingEditor() {
+      const form = $('#pricing-form');
+      if (!form) return;
+
+      const previewSingle = $('#pe-preview-single');
+      const previewDouble = $('#pe-preview-double');
+      const savedNote = $('#pe-saved-note');
+      const updatedAt = $('#pe-updated-at');
+
+      const readForm = () => {
+        const val = (name) => {
+          const el = form.querySelector(`[name="${name}"]`);
+          return el ? Number(el.value) || 0 : 0;
+        };
+        return {
+          bwRate: val('bwRate'),
+          colourRate: val('colourRate'),
+          minCharge: val('minCharge'),
+          paper: {
+            A4: val('paper-A4'),
+            A3: val('paper-A3'),
+            A5: val('paper-A5'),
+            Letter: val('paper-Letter'),
+            Legal: val('paper-Legal')
+          },
+          duplex: 2
+        };
+      };
+
+      /* Mirrors the customer app's price():
+         sheets = ceil(pages / perSheet / sided), then × rate × paper,
+         with the min-charge floor applied last. */
+      const calcPreview = (p, sided) => {
+        const sheets = Math.max(1, Math.ceil(10 / 1 / sided));
+        let total = sheets * (p.colourRate + (p.paper.A4 || 0));
+        if (p.minCharge && total < p.minCharge) total = p.minCharge;
+        return total;
+      };
+
+      const updatePreview = () => {
+        const p = readForm();
+        if (previewSingle) previewSingle.textContent = money(calcPreview(p, 1));
+        if (previewDouble) previewDouble.textContent = money(calcPreview(p, 2));
+      };
+
+      Array.from(form.querySelectorAll('.pe-input'))
+        .forEach((el) => el.addEventListener('input', updatePreview));
+      updatePreview();
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const saved = savePricing(readForm());
+        if (savedNote) {
+          savedNote.style.display = 'inline-flex';
+          setTimeout(() => { savedNote.style.display = 'none'; }, 2600);
+        }
+        if (updatedAt) updatedAt.textContent = fmt(saved.updatedAt);
+        toast('Pricing saved — the customer app will use these rates.');
+      });
+
+      const resetBtn = form.querySelector('[data-act="reset-pricing"]');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const d = DEFAULT_PRICING;
+          const set = (name, v) => {
+            const el = form.querySelector(`[name="${name}"]`);
+            if (el) el.value = v;
+          };
+          set('bwRate', Number(d.bwRate).toFixed(2));
+          set('colourRate', Number(d.colourRate).toFixed(2));
+          set('minCharge', Number(d.minCharge).toFixed(2));
+          set('paper-A4', Number(d.paper.A4).toFixed(2));
+          set('paper-A3', Number(d.paper.A3).toFixed(2));
+          set('paper-A5', Number(d.paper.A5).toFixed(2));
+          set('paper-Letter', Number(d.paper.Letter).toFixed(2));
+          set('paper-Legal', Number(d.paper.Legal).toFixed(2));
+          updatePreview();
+          toast('Defaults loaded — tap “Save pricing” to apply them.');
+        });
+      }
+    }
+
+    /* ------------------------------------------------------------
+     * 12. Document helpers (Blob access)
+     * ---------------------------------------------------------- */
+    function b64ToBytes(b64) {
+      const bin = atob(String(b64).replace(/\s/g, ''));
+      const arr = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      return arr;
+    }
+
+    function extractBlob(rec) {
+      if (!rec) return null;
+      const cand = rec.blob ?? rec.data ?? rec.file ?? rec.content ?? rec.buffer ?? rec.bytes ?? rec.value;
+      if (!cand) return null;
+
+      const mime = rec.type || rec.mime || rec.mimeType || 'application/octet-stream';
+
+      if (cand instanceof Blob) return cand;
+      if (cand instanceof ArrayBuffer) return new Blob([cand], { type: mime });
+      if (ArrayBuffer.isView(cand)) return new Blob([cand.buffer], { type: mime });
+
+      if (typeof cand === 'string') {
+        if (cand.startsWith('data:')) {
+          const comma = cand.indexOf(',');
+          if (comma > 0) {
+            try {
+              const meta = cand.slice(0, comma);
+              const b64 = cand.slice(comma + 1);
+              const m = /data:([^;]+)/.exec(meta);
+              return new Blob([b64ToBytes(b64)], { type: (m && m[1]) || mime });
+            } catch (_) {
+              return null;
+            }
+          }
+          return null;
+        }
+        /* raw base64 fallback */
+        if (cand.length > 32 && /^[A-Za-z0-9+/=\s]+$/.test(cand)) {
+          try {
+            return new Blob([b64ToBytes(cand)], { type: mime });
+          } catch (_) {
+            return null;
+          }
+        }
+      }
+      return null;
+    }
+
+    async function findDocumentRecord(doc) {
+      if (!doc || typeof doc !== 'object') return null;
+      const keys = [
+        doc.docId, doc.docID, doc.documentId, doc.fileId, doc.id
+      ].filter((k) => k !== undefined && k !== null && k !== '');
+      const tried = new Set();
+      for (const k of keys) {
+        if (tried.has(k)) continue;
+        tried.add(k);
+        try {
+          const rec = await getDocument(k);
+          if (rec) return rec;
+        } catch (_) { /* try next key */ }
+      }
+      return null;
+    }
+
+    function downloadBlob(blob, name) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = name || 'document';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+    }
+
+    /* ------------------------------------------------------------
+     * 13. Order drawer
      * ---------------------------------------------------------- */
     function renderDrawer() {
       const overlay = $('#drawer-overlay');
@@ -1275,7 +2037,10 @@
       const order = state.detailId ? findOrder(state.detailId) : null;
 
       if (!order) {
-        if (state.detailId) state.detailId = null;
+        state.detailId = null;
+        state.drawerToken++;         /* cancel in-flight hydration */
+        state.drawerBlobs = {};
+        state.blobCache.clear();
         overlay.classList.remove('open');
         body.innerHTML = '';
         return;
@@ -1284,34 +2049,110 @@
       body.innerHTML = drawerContent(order);
       overlay.classList.add('open');
       hydrateIcons(body);
+
+      hydrateDrawerDocs(order).catch((err) => {
+        console.warn('[admin] document hydration failed:', err);
+      });
+    }
+
+    function cfgChips(cfg) {
+      const chips = [];
+      if (!cfg || typeof cfg !== 'object') return chips;
+
+      const handled = new Set();
+
+      ['colour', 'color', 'paper', 'sides', 'orientation', 'quality', 'duplex', 'binding', 'mode']
+        .forEach((k) => {
+          const v = cfg[k];
+          if (v !== undefined && v !== null && v !== '' && v !== false) {
+            chips.push(String(v));
+            handled.add(k);
+          }
+        });
+
+      if (cfg.copies) {
+        chips.push(`${cfg.copies} ${Number(cfg.copies) === 1 ? 'copy' : 'copies'}`);
+      }
+      handled.add('copies');
+
+      if (cfg.perSheet) chips.push(`${cfg.perSheet} / sheet`);
+      handled.add('perSheet');
+
+      if (cfg.pagesMode) {
+        chips.push(String(cfg.pagesMode));
+        if (cfg.pagesMode === 'Custom Range' && cfg.range) chips.push('Pages ' + cfg.range);
+      }
+      if (cfg.range && cfg.pagesMode !== 'Custom Range') {
+        chips.push('Pages: ' + cfg.range);
+      }
+      handled.add('pagesMode');
+      handled.add('range');
+
+      Object.keys(cfg).forEach((k) => {
+        if (handled.has(k)) return;
+        const v = cfg[k];
+        if (v === undefined || v === null || v === '' || v === false) return;
+        const label = CFG_LABEL[k] || (k.charAt(0).toUpperCase() + k.slice(1));
+        chips.push(`${label}: ${v}`);
+      });
+
+      return chips;
+    }
+
+    function drawerDoc(doc, idx) {
+      const d = (doc && typeof doc === 'object') ? doc : { name: String(doc || 'Document') };
+      const cfg = d.cfg || d.printSettings || d.settings || d.options || {};
+      const chips = cfgChips(cfg);
+      const pages = Number(d.pages) || 0;
+      const name = d.name || d.fileName || d.filename || 'Document';
+
+      return `
+        <div class="dw-doc" data-doc-idx="${idx}">
+          <div class="dw-doc-ic">${icon('file', 16)}</div>
+          <div class="dw-doc-body">
+            <strong title="${esc(name)}">${esc(name)}</strong>
+            <small class="dw-doc-meta">${pages} page${pages === 1 ? '' : 's'}</small>
+            ${chips.length
+              ? `<div class="dw-chips">${chips.map((c) => `<span>${esc(c)}</span>`).join('')}</div>`
+              : ''}
+            <div class="dw-doc-actions"><span class="doc-loading">Checking file…</span></div>
+          </div>
+        </div>`;
     }
 
     function drawerContent(order) {
       const docs = orderDocs(order);
-      const paid = order.paymentStatus === 'Paid';
+      const c = customerOf(order);
+      const paid = paymentStatusOf(order) === 'Paid';
+      const amount = amountOf(order);
+      const status = statusOf(order);
+      const txnId = transactionIdOf(order);
+      const isUpi = /upi/i.test(paymentMethodOf(order));
 
       const docList = docs.length
-        ? docs.map(drawerDoc).join('')
+        ? docs.map((d, i) => drawerDoc(d, i)).join('')
         : `<p class="dw-muted">No document snapshot was stored with this order.</p>`;
 
-      const statusOptions = FLOW
-        .concat(['Cancelled'])
-        .map((status) => {
-          const cls = status === 'Cancelled' ? 'cancel' : '';
-          const active = order.status === status ? 'active' : '';
-          return `<button class="status-opt ${cls} ${active}"
-                          data-act="set-status" data-id="${esc(order.id)}" data-status="${status}">
-                    ${esc(STATUS_META[status] ? STATUS_META[status].label : status)}
-                  </button>`;
-        })
-        .join('');
+      const unpaid = paymentStatusOf(order) !== 'Paid';
+      const statusOptions = FLOW.concat(['Cancelled']).map((s) => {
+        const cls = s === 'Cancelled' ? 'cancel' : '';
+        const activeCls = status === s ? 'active' : '';
+        const gated = unpaid && PAYMENT_GATE.has(s);
+        /* Gated buttons stay clickable so the modal can explain the rule,
+           but they carry a lock title + a subtle dimmed style. */
+        return `<button class="status-opt ${cls} ${activeCls} ${gated ? 'gated' : ''}"
+                        data-act="set-status" data-id="${esc(order.id)}" data-status="${s}"
+                        ${gated ? 'title="Mark as paid first"' : ''}>
+                  ${esc(STATUS_META[s].label)}
+                </button>`;
+      }).join('');
 
       return `
         <div class="dw-head">
           <div>
             <div class="eyebrow">ORDER DETAILS</div>
             <h2>${esc(queueLabel(order))}</h2>
-            <div style="margin-top:7px">${statusBadge(order.status)}</div>
+            <div style="margin-top:7px">${statusBadge(status)}</div>
           </div>
           <button class="dw-close" data-act="close-drawer" aria-label="Close order details">
             ${icon('x', 16)}
@@ -1321,18 +2162,44 @@
         <div class="dw-content">
           <div class="dw-amount">
             <small>Total amount</small>
-            <strong>${money(order.amount)}</strong>
+            <strong>${money(amount)}</strong>
           </div>
 
           <div class="dw-grid">
             <div class="dw-cell">
+              <small>Customer</small>
+              <strong title="${esc(c.name)}">${esc(c.name)}</strong>
+            </div>
+            <div class="dw-cell">
+              <small>Phone</small>
+              <strong>${c.phone !== '—' ? `<a href="tel:${esc(c.phone)}">${esc(c.phone)}</a>` : '—'}</strong>
+            </div>
+            <div class="dw-cell">
+              <small>Email</small>
+              <strong>${c.email !== '—' ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '—'}</strong>
+            </div>
+            <div class="dw-cell">
               <small>Placed</small>
-              <strong title="${esc(fmt(order.created))}">${esc(fmt(order.created))}</strong>
+              <strong>${esc(fmt(order.created))}</strong>
             </div>
             <div class="dw-cell">
               <small>Payment</small>
-              <strong>${esc(order.paymentMethod || '—')} · ${paid ? 'Paid' : 'Unpaid'}</strong>
+              <strong>${esc(payDisplay(order))}</strong>
             </div>
+            <div class="dw-cell">
+              <small>Total pages</small>
+              <strong>${orderPages(order)}</strong>
+            </div>
+            ${txnId ? `
+            <div class="dw-cell" style="grid-column:1 / -1">
+              <small>${isUpi ? 'UPI transaction ID' : 'Transaction ID'}</small>
+              <strong
+                title="Tap to select the whole ID, then copy"
+                style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;
+                       user-select:all;-webkit-user-select:all;letter-spacing:-.2px">
+                ${esc(txnId)}
+              </strong>
+            </div>` : ''}
             <div class="dw-cell" style="grid-column:1 / -1">
               <small>Order ID</small>
               <strong style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px">
@@ -1364,48 +2231,117 @@
         </div>`;
     }
 
-    function drawerDoc(doc) {
-      if (!doc || typeof doc !== 'object') return '';
-      const cfg = doc.cfg || {};
-      const chips = [];
+    /**
+     * Resolve each document's Blob from the order snapshot or the
+     * "documents" object store, then wire up Open / Download buttons.
+     * Page counts are compared with the stored record and mismatches
+     * are flagged so the admin can spot inconsistent data.
+     */
+    async function hydrateDrawerDocs(order) {
+      const token = ++state.drawerToken;
+      state.drawerBlobs = {};
 
-      if (cfg.colour) chips.push(cfg.colour);
-      if (cfg.paper) chips.push(cfg.paper);
-      if (cfg.copies) chips.push(`${cfg.copies} ${Number(cfg.copies) === 1 ? 'copy' : 'copies'}`);
-      if (cfg.perSheet) chips.push(`${cfg.perSheet} / sheet`);
-      if (cfg.sides) chips.push(cfg.sides);
-      if (cfg.orientation) chips.push(cfg.orientation);
-      if (cfg.pagesMode) chips.push(cfg.pagesMode);
-      if (cfg.pagesMode === 'Custom Range' && cfg.range) chips.push('Pages ' + cfg.range);
+      const body = $('#drawer-body');
+      if (!body) return;
 
-      const pages = Number(doc.pages) || 0;
+      const docs = orderDocs(order);
 
-      return `
-        <div class="dw-doc">
-          <div class="dw-doc-ic">${icon('file', 16)}</div>
-          <div class="dw-doc-body">
-            <strong title="${esc(doc.name || 'Document')}">${esc(doc.name || 'Document')}</strong>
-            <small>${pages} page${pages === 1 ? '' : 's'}</small>
-            ${chips.length
-              ? `<div class="dw-chips">${chips.map((c) => `<span>${esc(c)}</span>`).join('')}</div>`
-              : ''}
-          </div>
-        </div>`;
+      for (let i = 0; i < docs.length; i++) {
+        if (token !== state.drawerToken) return;
+
+        const doc = docs[i] || {};
+        const item = body.querySelector(`.dw-doc[data-doc-idx="${i}"]`);
+        if (!item) continue;
+
+        const metaEl = item.querySelector('.dw-doc-meta');
+        const actionsEl = item.querySelector('.dw-doc-actions');
+        if (!actionsEl) continue;
+
+        const snapshotPages = Number(doc.pages) || 0;
+        const cacheKey = `${order.id}:${i}`;
+        const cached = state.blobCache.get(cacheKey);
+
+        let blob = extractBlob(doc) || (cached ? cached.blob : null);
+        let recordPages = cached ? cached.recordPages : null;
+
+        if (!cached) {
+          if (!blob) {
+            const record = await findDocumentRecord(doc);
+            if (token !== state.drawerToken) return;
+            if (record) {
+              blob = extractBlob(record);
+              const rp = record.pages;
+              if (rp !== undefined && rp !== null && rp !== '') {
+                recordPages = Number(rp) || 0;
+              }
+            }
+          }
+          state.blobCache.set(cacheKey, { blob: blob || null, recordPages });
+        }
+
+        if (token !== state.drawerToken) return;
+
+        /* ----- meta line: pages + size + mismatch warning ----- */
+        const pagesToShow = snapshotPages || recordPages || 0;
+        if (metaEl) {
+          let html = `${pagesToShow} page${pagesToShow === 1 ? '' : 's'}`;
+          if (blob) html += ` · ${fmtBytes(blob.size)}`;
+          if (
+            recordPages !== null &&
+            recordPages > 0 &&
+            snapshotPages > 0 &&
+            recordPages !== snapshotPages
+          ) {
+            html += ` <span class="doc-mismatch" title="The stored document has a different page count">stored: ${recordPages}</span>`;
+          }
+          metaEl.innerHTML = html;
+        }
+
+        /* ----- actions ----- */
+        if (blob) {
+          state.drawerBlobs[i] = blob;
+          actionsEl.innerHTML = `
+            <button class="mini" data-act="doc-open" data-idx="${i}">${icon('eye', 13)} Open</button>
+            <button class="mini solid" data-act="doc-download" data-idx="${i}">${icon('download', 13)} Download</button>`;
+        } else {
+          actionsEl.innerHTML = `<span class="doc-missing">File not stored on this device</span>`;
+        }
+        hydrateIcons(actionsEl);
+      }
     }
 
     function openDetail(id) {
       if (!findOrder(id)) return;
       state.detailId = id;
-      renderDrawer();
+
+      /* Viewing an order marks it as reviewed. */
+      if (!state.seen.has(id)) {
+        state.seen.add(id);
+        saveSeen(state.seen);
+      }
+      state.newIds.delete(id);
+
+      render();
     }
 
     function closeDrawer() {
       state.detailId = null;
+      state.drawerToken++;
+      state.drawerBlobs = {};
+      state.blobCache.clear();
       renderDrawer();
     }
 
+    function markAllSeen() {
+      state.orders.forEach((o) => state.seen.add(o.id));
+      saveSeen(state.seen);
+      state.newIds.clear();
+      render();
+      toast('All orders marked as reviewed.');
+    }
+
     /* ------------------------------------------------------------
-     * 12. Confirm dialog
+     * 14. Confirm dialog
      * ---------------------------------------------------------- */
     function openConfirm({ title, message, confirmLabel = 'Confirm', danger = false, onConfirm }) {
       pendingConfirm = onConfirm || null;
@@ -1421,6 +2357,51 @@
       $('#confirm-overlay').classList.add('open');
     }
 
+        /* Shown when the admin tries to advance an unpaid order. */
+    function openPaymentGate(order, targetStatus) {
+      const card = $('#confirm-card');
+      if (!card) return;
+
+      /* "Mark as paid & continue" does both actions in one tap. */
+      pendingConfirm = async () => {
+        await markPaidAndAdvance(order.id, targetStatus);
+      };
+
+      card.innerHTML = `
+        <div class="confirm-icon warn">${icon('banknote', 25)}</div>
+        <h3>Payment not collected</h3>
+        <p>
+          Please mark <strong>${esc(queueLabel(order))}</strong> as paid
+          before moving it to <strong>${esc(STATUS_META[targetStatus].label)}</strong>.
+        </p>
+        <div class="confirm-actions">
+          <button class="btn ghost" data-act="confirm-no">Cancel</button>
+          <button class="btn" data-act="confirm-yes">Mark as paid &amp; continue</button>
+        </div>`;
+      $('#confirm-overlay').classList.add('open');
+    }
+
+    /* Mark the order paid (mirrors togglePaid's nested-payment fix),
+       then move it to the requested status in a single flow. */
+    async function markPaidAndAdvance(id, targetStatus) {
+      const order = findOrder(id);
+      if (!order) return;
+
+      const patch = { paymentStatus: 'Paid' };
+      if (order.payment && typeof order.payment === 'object') {
+        patch.payment = Object.assign({}, order.payment, { status: 'Paid' });
+      }
+      await updateOrder(id, patch);
+      /* updateOrder already broadcast the new state (paymentStatus: 'Paid').
+         Broadcasting the stale `order` here would overwrite that with the
+         old value on the other tab. Do NOT broadcast again. */
+
+      await updateOrder(id, { status: targetStatus });
+      toast(`${queueLabel(order)} marked paid · ${STATUS_META[targetStatus].label}`);
+      await loadAll({ notify: false });
+      render();
+    }
+
     function closeConfirm() {
       pendingConfirm = null;
       $('#confirm-overlay').classList.remove('open');
@@ -1428,7 +2409,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 13. Mutations
+     * 15. Mutations
      * ---------------------------------------------------------- */
     async function updateOrder(id, patch) {
       const order = await getOrder(id);
@@ -1439,16 +2420,27 @@
       return order;
     }
 
+    /* Statuses that must not be reached until the order has been paid. */
+    const PAYMENT_GATE = new Set(['Printing', 'Ready', 'Completed']);
+
     async function setOrderStatus(id, status) {
       const order = findOrder(id);
       if (!order) return;
-      if (order.status === status) {
-        toast(`${queueLabel(order)} is already ${status.toLowerCase()}.`);
+      if (statusOf(order) === status) {
+        toast(`${queueLabel(order)} is already ${STATUS_META[status].label.toLowerCase()}.`);
         return;
       }
+
+      /* Block unpaid orders from moving past "Pending". */
+      if (PAYMENT_GATE.has(status) && paymentStatusOf(order) !== 'Paid') {
+        openPaymentGate(order, status);
+        return;
+      }
+
       await updateOrder(id, { status });
-      toast(`${queueLabel(order)} → ${STATUS_META[status] ? STATUS_META[status].label : status}`);
+      toast(`${queueLabel(order)} → ${STATUS_META[status].label}`);
       await loadAll({ notify: false });
+      render(); /* refresh drawer + badges */
     }
 
     async function advanceOrder(id) {
@@ -1465,10 +2457,19 @@
     async function togglePaid(id) {
       const order = findOrder(id);
       if (!order) return;
-      const next = order.paymentStatus === 'Paid' ? 'Pending' : 'Paid';
-      await updateOrder(id, { paymentStatus: next });
+      const current = paymentStatusOf(order);
+      const next = current === 'Paid' ? 'Pending' : 'Paid';
+
+      const patch = { paymentStatus: next };
+      /* Keep a nested payment object consistent when the customer app uses one. */
+      if (order.payment && typeof order.payment === 'object') {
+        patch.payment = Object.assign({}, order.payment, { status: next });
+      }
+
+      await updateOrder(id, patch);
       toast(`${queueLabel(order)} marked as ${next === 'Paid' ? 'paid' : 'unpaid'}.`);
       await loadAll({ notify: false });
+      render();
     }
 
     function askCancel(id) {
@@ -1483,6 +2484,7 @@
           await updateOrder(id, { status: 'Cancelled' });
           toast(`${queueLabel(order)} cancelled.`);
           await loadAll({ notify: false });
+          render();
         }
       });
     }
@@ -1497,9 +2499,18 @@
         danger: true,
         onConfirm: async () => {
           await deleteOrder(id);
-          if (state.detailId === id) state.detailId = null;
+          /* Drop every cached blob for this order (it may have several docs). */
+          for (const key of Array.from(state.blobCache.keys())) {
+            if (key.startsWith(id + ':')) state.blobCache.delete(key);
+          }
+          if (state.detailId === id) {
+            state.detailId = null;
+            state.drawerToken++;
+            state.drawerBlobs = {};
+          }
           toast(`${queueLabel(order)} deleted.`);
           await loadAll({ notify: false });
+          render();
         }
       });
     }
@@ -1526,6 +2537,7 @@
           })));
           toast('Finished orders cleared.');
           await loadAll({ notify: false });
+          render();
         }
       });
     }
@@ -1557,14 +2569,22 @@
           state.loaded = false;
           state.detailId = null;
           state.docCount = 0;
+          state.newIds.clear();
+          state.seen = new Set();
+          state.seenInit = false;
+          state.blobCache.clear();
+          state.drawerToken++;
+          state.drawerBlobs = {};
+
           toast('All local data erased.');
           await loadAll({ notify: false });
+          render();
         }
       });
     }
 
     /* ------------------------------------------------------------
-     * 14. CSV export
+     * 16. CSV export
      * ---------------------------------------------------------- */
     function exportCSV() {
       if (!state.orders.length) {
@@ -1572,23 +2592,28 @@
         return;
       }
       const rows = [[
-        'Queue', 'Order ID', 'Placed', 'Status', 'Payment method',
-        'Payment status', 'Amount (INR)', 'Documents', 'Pages', 'File names'
+        'Queue', 'Order ID', 'Placed', 'Customer', 'Phone', 'Email',
+        'Status', 'Payment method', 'Payment status', 'Amount (INR)',
+        'Documents', 'Pages', 'File names'
       ]];
 
       state.orders.forEach((o) => {
         const docs = orderDocs(o);
+        const c = customerOf(o);
         rows.push([
           o.queue ?? '',
           o.id ?? '',
           fmt(o.created),
-          o.status ?? '',
-          o.paymentMethod ?? '',
-          o.paymentStatus ?? '',
-          Number(o.amount || 0).toFixed(2),
+          c.name,
+          c.phone,
+          c.email,
+          statusOf(o),
+          paymentMethodOf(o),
+          paymentStatusOf(o),
+          amountOf(o).toFixed(2),
           docs.length,
           orderPages(o),
-          docs.map((d) => (d && d.name) || '').join('; ')
+          docs.map((d) => (d && (d.name || d.fileName)) || '').join('; ')
         ]);
       });
 
@@ -1610,10 +2635,262 @@
     }
 
     /* ------------------------------------------------------------
-     * 15. Navigation & actions
+     * 16b. CSV import
+     * ---------------------------------------------------------- */
+    let importFileInput = null;
+
+    function ensureFileInput() {
+      if (importFileInput) return importFileInput;
+      importFileInput = document.createElement('input');
+      importFileInput.type = 'file';
+      importFileInput.accept = '.csv,text/csv';
+      importFileInput.style.display = 'none';
+      importFileInput.addEventListener('change', onImportFileChosen);
+      document.body.appendChild(importFileInput);
+      return importFileInput;
+    }
+
+    function triggerImport() {
+      const input = ensureFileInput();
+      input.value = '';
+      input.click();
+    }
+
+    async function onImportFileChosen(event) {
+      const input = event.target;
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        await processImport(text, file.name);
+      } catch (err) {
+        console.error('[admin] import failed:', err);
+        toast(err && err.message ? err.message : 'Could not read the CSV file.');
+      } finally {
+        input.value = '';
+      }
+    }
+
+    /* RFC-4180-ish parser: handles quoted fields, escaped quotes (""),
+       BOM, CRLF/LF/CR line endings. */
+    function parseCSV(text) {
+      if (typeof text !== 'string' || !text) return [];
+      if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+      const rows = [];
+      let row = [];
+      let field = '';
+      let inQuotes = false;
+      let i = 0;
+      const len = text.length;
+
+      const endField = () => { row.push(field); field = ''; };
+      const endRow = () => { endField(); rows.push(row); row = []; };
+
+      while (i < len) {
+        const ch = text[i];
+        if (inQuotes) {
+          if (ch === '"') {
+            if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+            inQuotes = false; i++; continue;
+          }
+          field += ch; i++; continue;
+        }
+        if (ch === '"') { inQuotes = true; i++; continue; }
+        if (ch === ',') { endField(); i++; continue; }
+        if (ch === '\n') { endRow(); i++; continue; }
+        if (ch === '\r') { endRow(); i++; if (text[i] === '\n') i++; continue; }
+        field += ch; i++;
+      }
+      if (field.length || row.length) endRow();
+      return rows;
+    }
+
+    const normHeader = (s) =>
+      String(s || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+    function buildColumnMap(header) {
+      const map = {};
+      header.forEach((h, i) => {
+        if (!h) return;
+        if (h === 'queue' || h === 'queue number' || h === 'q' || h === 'token') map.queue = i;
+        else if (h === 'order id' || h === 'id' || h === 'orderid') map.id = i;
+        else if (h === 'placed' || h === 'created' || h === 'date' || h === 'placed at' || h === 'created at') map.placed = i;
+        else if (h === 'customer' || h === 'name' || h === 'customer name') map.customer = i;
+        else if (h === 'phone' || h === 'mobile' || h === 'contact') map.phone = i;
+        else if (h === 'email' || h === 'mail') map.email = i;
+        else if (h === 'status') map.status = i;
+        else if (h === 'payment method' || h === 'method' || h === 'pay method') map.paymentMethod = i;
+        else if (h === 'payment status' || h === 'paid') map.paymentStatus = i;
+        else if (h === 'amount' || h === 'amount inr' || h === 'total' || h === 'price') map.amount = i;
+        else if (h === 'documents' || h === 'docs' || h === 'document count') map.docs = i;
+        else if (h === 'pages' || h === 'total pages') map.pages = i;
+        else if (h === 'file names' || h === 'files' || h === 'filenames' || h === 'document names') map.fileNames = i;
+      });
+      return map;
+    }
+
+    /* The old export wrote e.g. "26 Nov 2026, 3:45 pm" — try a few variants. */
+    function parsePlacedDate(raw) {
+      const s = String(raw || '').trim();
+      if (!s) return new Date().toISOString();
+      let d = new Date(s);
+      if (isNaN(d.getTime())) d = new Date(s.replace(/,/g, ''));
+      if (isNaN(d.getTime())) d = new Date(s.replace(/[,\u00A0]/g, ' ').replace(/\s+/g, ' ').trim());
+      return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
+    }
+
+    function buildOrderFromRow(map, row, fallbackQueue) {
+      const get = (key) => {
+        const idx = map[key];
+        return idx === undefined ? '' : String(row[idx] ?? '').trim();
+      };
+
+      const rawStatus = get('status');
+      const statusHint = rawStatus.toLowerCase() === 'ready for pickup' ? 'Ready' : rawStatus;
+
+      const amountRaw = get('amount').replace(/[^\d.\-]/g, '');
+      const amountNum = Number(amountRaw);
+
+      const pages = Number(get('pages')) || 0;
+      const docCount = Number(get('docs')) || 0;
+      const fileNames = get('fileNames').split(/;\s*/).map((s) => s.trim()).filter(Boolean);
+
+      const docs = [];
+      const total = Math.max(docCount, fileNames.length);
+      for (let i = 0; i < total; i++) {
+        docs.push({ name: fileNames[i] || `Document ${i + 1}`, pages: i === 0 ? pages : 0 });
+      }
+
+      const id = get('id') || ('import-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8));
+
+      return {
+        id,
+        queue: get('queue') || fallbackQueue,
+        created: parsePlacedDate(get('placed')),
+        status: normStatus(statusHint || 'Pending'),
+        paymentStatus: normPay(get('paymentStatus')),
+        paymentMethod: get('paymentMethod') || 'Cash',
+        amount: Number.isFinite(amountNum) ? amountNum : 0,
+        customer: {
+          name: get('customer') || '—',
+          phone: get('phone') || '',
+          email: get('email') || ''
+        },
+        docs,
+        pages
+      };
+    }
+
+    function validateImportedOrder(order) {
+      const errors = [];
+      if (!order.id) errors.push('missing order ID');
+      const validStatuses = FLOW.concat(['Cancelled']);
+      if (!validStatuses.includes(order.status)) errors.push('unknown status "' + order.status + '"');
+      return errors;
+    }
+
+    async function bulkImportOrders(orders) {
+      const db = await getDB();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction('orders', 'readwrite');
+        const store = tx.objectStore('orders');
+        orders.forEach((o) => store.put(o));
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error || new Error('Could not save imported orders.'));
+        tx.onabort = () => reject(tx.error || new Error('Import was aborted.'));
+      });
+      orders.forEach((o) => broadcastOrder(o));
+    }
+
+    async function processImport(text, fileName) {
+      const rows = parseCSV(text);
+      if (rows.length < 2) throw new Error('The CSV file has no data rows.');
+
+      const headerIdx = rows.findIndex((r) => r.some((c) => String(c).trim() !== ''));
+      if (headerIdx < 0) throw new Error('The CSV file is empty.');
+
+      const header = rows[headerIdx].map(normHeader);
+      const map = buildColumnMap(header);
+
+      if (map.id === undefined && map.customer === undefined && map.queue === undefined) {
+        throw new Error('Could not recognise the CSV columns. Use a Smart Xerox order export.');
+      }
+
+      const dbOrders = await getAllOrders();
+      const existing = new Set(dbOrders.map((o) => o.id));
+
+      let maxQueue = 0;
+      dbOrders.forEach((o) => {
+        const n = Number(o.queue);
+        if (Number.isFinite(n) && n > maxQueue) maxQueue = n;
+      });
+
+      const imported = [];
+      const duplicates = [];
+      const invalid = [];
+
+      for (let r = headerIdx + 1; r < rows.length; r++) {
+        const row = rows[r];
+        if (!row.some((c) => String(c).trim() !== '')) continue;
+
+        let order;
+        try {
+          order = buildOrderFromRow(map, row, String(maxQueue + 1));
+        } catch (err) {
+          invalid.push({ row: r + 1, reason: err.message });
+          continue;
+        }
+
+        /* Bump the sequence whenever the CSV itself supplies a higher number. */
+        const nq = Number(order.queue);
+        if (Number.isFinite(nq) && nq > maxQueue) maxQueue = nq;
+
+        const errs = validateImportedOrder(order);
+        if (errs.length) {
+          invalid.push({ row: r + 1, reason: errs.join(', ') });
+          continue;
+        }
+        if (existing.has(order.id)) {
+          duplicates.push(order.id);
+          continue;
+        }
+        existing.add(order.id);
+        imported.push(order);
+      }
+
+      if (!imported.length) {
+        toast(`Nothing to import — ${duplicates.length} duplicate${duplicates.length === 1 ? '' : 's'}, ${invalid.length} invalid row${invalid.length === 1 ? '' : 's'}.`);
+        return;
+      }
+
+      const summaryBits = [
+        `${imported.length} order${imported.length === 1 ? '' : 's'} ready to import from ${fileName}.`,
+        duplicates.length ? `${duplicates.length} duplicate${duplicates.length === 1 ? '' : 's'} will be skipped.` : '',
+        invalid.length ? `${invalid.length} invalid row${invalid.length === 1 ? '' : 's'} will be skipped.` : ''
+      ].filter(Boolean);
+
+      openConfirm({
+        title: `Import ${imported.length} order${imported.length === 1 ? '' : 's'}?`,
+        message: summaryBits.join(' '),
+        confirmLabel: 'Import',
+        danger: false,
+        onConfirm: async () => {
+          await bulkImportOrders(imported);
+          /* The admin just imported them — don't flag them as "new". */
+          imported.forEach((o) => state.seen.add(o.id));
+          saveSeen(state.seen);
+          toast(`Imported ${imported.length} order${imported.length === 1 ? '' : 's'}.`);
+          await loadAll({ notify: false });
+          render();
+        }
+      });
+    }
+
+    /* ------------------------------------------------------------
+     * 17. Navigation & actions
      * ---------------------------------------------------------- */
     async function navigate(view) {
-      if (!['dashboard', 'orders', 'settings'].includes(view)) return;
+      if (!['dashboard', 'orders', 'all-orders', 'settings'].includes(view)) return;
       state.view = view;
       if (view === 'settings') {
         await loadDocumentCount();
@@ -1631,6 +2908,24 @@
           toast('Refreshed.');
           break;
         }
+        case 'goto-new':
+          state.filter = 'new';
+          await navigate('orders');
+          break;
+        case 'mark-all-seen':
+          markAllSeen();
+          break;
+        case 'view-all-orders':
+          state.filter = 'all';
+          state.search = '';
+          await navigate('all-orders');
+          break;
+        case 'back-to-dashboard':
+          await navigate('dashboard');
+          break;
+        case 'scroll-top':
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          break;
         case 'detail':
           openDetail(data.id);
           break;
@@ -1659,12 +2954,42 @@
         case 'export':
           exportCSV();
           break;
+        case 'import':
+          triggerImport();
+          break;
         case 'clear-finished':
           askClearFinished();
           break;
         case 'reset-all':
           askResetAll();
           break;
+        case 'doc-open': {
+          const blob = state.drawerBlobs[data.idx];
+          if (!blob) {
+            toast('This file is not available on this device.');
+            break;
+          }
+          const url = URL.createObjectURL(blob);
+          const win = window.open(url, '_blank', 'noopener');
+          if (!win) toast('Allow pop-ups to preview documents.');
+          setTimeout(() => URL.revokeObjectURL(url), 60000);
+          break;
+        }
+        case 'doc-download': {
+          const blob = state.drawerBlobs[data.idx];
+          if (!blob) {
+            toast('This file is not available on this device.');
+            break;
+          }
+          const order = findOrder(state.detailId);
+          const docs = orderDocs(order);
+          const idx = Number(data.idx);
+          const d = docs[idx] || {};
+          const name = d.name || d.fileName || d.filename || `document-${idx + 1}`;
+          downloadBlob(blob, name);
+          toast('Download started.');
+          break;
+        }
         case 'confirm-yes': {
           const run = pendingConfirm;
           closeConfirm();
@@ -1687,7 +3012,7 @@
     }
 
     /* ------------------------------------------------------------
-     * 16. Global event wiring
+     * 18. Global event wiring
      * ---------------------------------------------------------- */
     document.addEventListener('click', (event) => {
       const navBtn = event.target.closest('[data-nav]');
@@ -1710,19 +3035,12 @@
     document.addEventListener('input', (event) => {
       if (event.target && event.target.id === 'order-search') {
         state.search = event.target.value;
+
         /* Re-render only the list area, keeping the input untouched. */
-        const list = event.target.closest('.content').querySelector('.queue-list');
+        const content = event.target.closest('.content');
+        const list = content && content.querySelector('.queue-list');
         if (list) {
-          const query = state.search.trim().toLowerCase();
-          const filtered = state.orders.filter((o) => {
-            if (state.filter !== 'all' && o.status !== state.filter) return false;
-            if (!query) return true;
-            const haystack = [
-              o.queue, o.id, o.paymentMethod, o.paymentStatus,
-              ...orderDocs(o).map((d) => (d && d.name) || '')
-            ].join(' ').toLowerCase();
-            return haystack.includes(query);
-          });
+          const filtered = visibleOrders();
           list.innerHTML = filtered.length
             ? filtered.map(orderCard).join('')
             : `<div class="empty">
@@ -1755,16 +3073,29 @@
       }
     });
 
+    /* Scroll-to-top button visibility */
+    const scrollTopBtn = $('#scroll-top');
+    function updateScrollTopBtn() {
+      if (!scrollTopBtn) return;
+      scrollTopBtn.classList.toggle('show', window.scrollY > 280);
+    }
+    window.addEventListener('scroll', updateScrollTopBtn, { passive: true });
+    updateScrollTopBtn();
+
     /* Refresh when the tab becomes visible again */
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         loadAll({ notify: true });
       }
     });
+    /* Profile changes in the customer app (same browser) → refresh. */
+    window.addEventListener('storage', (event) => {
+      if (event.key === PROFILE_KEY) render();
+    });
     window.addEventListener('focus', () => loadAll({ notify: true }));
 
     /* ------------------------------------------------------------
-     * 17. Boot
+     * 19. Boot
      * ---------------------------------------------------------- */
     function startPolling() {
       if (pollTimer) clearInterval(pollTimer);
@@ -1772,6 +3103,11 @@
     }
 
     async function boot() {
+      /* Restore the "already seen" set before the first load. */
+      const savedSeen = loadSeen();
+      state.seen = savedSeen || new Set();
+      state.seenInit = savedSeen !== null;
+
       hydrateIcons(document);
       render();                    /* instant shell */
       connectChannel();
